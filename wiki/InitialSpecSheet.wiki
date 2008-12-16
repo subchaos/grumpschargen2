@@ -19,7 +19,7 @@
   * system to list stats
   * templates
 
-=== Additional features ===
+*Additional features*
 
   * basic "auto-approve" setting - if on, auto-approval can happen so long as everything checks out
   * specific stat "no-auto-approve" setting - if set, will stop auto-approval if the PC object has that stat set
@@ -42,3 +42,20 @@ Master DB
     * different stat values
     * additional available stats
     * rules restricting availability of racial stats
+
+*Anatomy of a stat*
+
+  * Name
+  * Value
+    * Explicitly permitted values (optional)
+  * Data type
+  * Data length
+  * PC storage location
+  * Costs
+    * Base cost
+    * XP cost (trumps base cost after approval with a multiplier)
+    * Freebie cost (optional)
+  * Permissions
+    * Requirements in order to have it
+    * Requirements in order to raise it
+    * Whether or not this disables auto-approval
