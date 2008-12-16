@@ -1,7 +1,7 @@
 #summary Project spec sheet.
 #labels specification,Featured,specsheet
 
-= Goals =
+=== Goals ===
 
   * Simple to use
   * Simple to code and read the code of
@@ -9,7 +9,7 @@
   * Usable on MUX (and possibly Rhost, and maybe even MUSH, though no promises)
   * Reasonably complete
 
-= Should contain =
+=== Should contain ===
 
   * +sheet
   * +prove
@@ -19,26 +19,26 @@
   * system to list stats
   * templates
 
-= Additional features =
+=== Additional features ===
 
   * basic "auto-approve" setting - if on, auto-approval can happen so long as everything checks out
   * specific stat "no-auto-approve" setting - if set, will stop auto-approval if the PC object has that stat set
   * rules for stat combinations that prevent auto-approval
 
-= Database =
+=== Database ===
 
 Master DB
-	* auto-approve (default 1)
-	* default sheet sections
-	* default stat names
-	* default stat values
-	* default available stats
-	* rules restricting availabilty of default stats
-	Race A (B, C, ...etc) DB
-		* rules for determining if PC is race
-		* rules for determining whether or not PC can be set to race
-		* additional sheet sections
-		* different stat names
-		* different stat values
-		* additional available stats
-		* rules restricting availability of racial stats
+  * auto-approve (default 1)
+  * default sheet sections
+  * default stat names
+  * default stat values
+  * default available stats
+  * rules restricting availabilty of default stats
+  Race A (B, C, ...etc) DB
+    * rules for determining if PC is race
+    * rules for determining whether or not PC can be set to race
+    * additional sheet sections
+    * different stat names
+    * different stat values
+    * additional available stats
+    * rules restricting availability of racial stats
