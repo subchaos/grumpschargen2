@@ -23,6 +23,7 @@
 
   * basic "auto-approve" setting - if on, auto-approval can happen so long as everything checks out
   * specific stat "no-auto-approve" setting - if set, will stop auto-approval if the PC object has that stat set
+  * rules for stat combinations that prevent auto-approval
 
 = Database =
 
