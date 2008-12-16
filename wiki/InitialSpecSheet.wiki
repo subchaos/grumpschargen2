@@ -42,6 +42,11 @@ Master DB
     * different stat values
     * additional available stats
     * rules restricting availability of racial stats
+  Types of points:
+|| *Name* || *Multiplier* ||
+|| Experience || Stat+1 (or just stat) ||
+|| Freebies || 1 ||
+|| Magic XP || Stat+1 ||
 
 *Anatomy of a stat*
 
@@ -51,11 +56,8 @@ Master DB
   * Data type
   * Data length
   * PC storage location
-  * Costs
-    * Base cost
-    * XP cost (trumps base cost after approval with a multiplier)
-    * Freebie cost (optional)
-  * Permissions
-    * Requirements in order to have it
-    * Requirements in order to raise it
-    * Whether or not this disables auto-approval
+  * Info (optional)
+  * Base cost
+  * Prerequisites to have
+  * Prerequisites to raise
+  * Whether or not this disables auto-approval
