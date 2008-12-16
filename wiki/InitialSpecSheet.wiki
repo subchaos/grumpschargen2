@@ -52,7 +52,7 @@ Master DB
 
   * Name
   * Value
-    * Explicitly permitted values (optional)
+  * Explicitly permitted values (optional)
   * Data type
   * Data length
   * PC storage location
