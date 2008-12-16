@@ -33,7 +33,7 @@ Master DB
   * default stat names
   * default stat values
   * default available stats
-  * rules restricting availabilty of default stats
+  * rules restricting availability of default stats
   Race A (B, C, ...etc) DB
     * rules for determining if PC is race
     * rules for determining whether or not PC can be set to race
