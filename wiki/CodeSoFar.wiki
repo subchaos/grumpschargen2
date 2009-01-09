@@ -1,4 +1,4 @@
-#summary Working copy of the code.
+#summary Current (but not necessarily working) copy of the code.
 #labels Featured
 =WORK IN PROGRESS=
 
