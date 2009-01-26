@@ -57,9 +57,11 @@ The following code will change at my whim. May be updated regularly, may not. Co
 
 &detail-attribute_balance NR=5 4 3
 
+&fn-getstatdbref CDH=if(t(setr(0, first(iter(lcon(me), if(strmatch(name(itext(0)), %0), itext(0)|<term>|)), |<term>|))), %q0, #-1 COULD NOT GET RACE OBJECT DBREF FOR %0.)
+
 &fn-getstat NR=default(%0/_race, Mortal)
 
-&fn-getstatdetail NR=udefault(u(fn-getstat, %0)-dbref/detail-%1, udefault(me/detail-%1, #-1 ERROR GETTING STAT DETAIL %1 FOR %0.))
+&fn-getstatdetail NR=if(t(setr(0, ulocal(fn-getstatdbref, %0))), udefault(%q0/detail-%1, udefault(me/detail-%1, #-1 ERROR GETTING RACE-LEVEL DETAIL %1 FOR %0.)), %q0)
 
 
 
@@ -68,7 +70,6 @@ The following code will change at my whim. May be updated regularly, may not. Co
 @set NM=HALT INHERIT
 @force me=@parent NM=v(NR)
 @lock/use NM=stafflock/1
-@force me=&mortal-dbref NR=num(NM)
 
 
 
@@ -77,7 +78,6 @@ The following code will change at my whim. May be updated regularly, may not. Co
 @set NC=HALT INHERIT
 @force me=@parent NC=v(NR)
 @lock/use NC=stafflock/1
-@force me=&changeling-dbref NR=num(NC)
 
 &detail-attribute_balance NC=5 4 3
 
@@ -93,7 +93,7 @@ The following code will change at my whim. May be updated regularly, may not. Co
 
 &valid_stat_values NA=1|2|3|4|5|6|7|8|9|10
 
-&fn-getstat NA=extract(setr(0, default(%0/_attributes, 0|0|0|0|0|0|0|0|0)), member(%q0, %1, |), 1, |)
+&fn-getstat NA=extract(setr(0, default(%0/_attributes, 1|1|1|1|1|1|1|1|1)), member(%q0, %1, |), 1, |)
 
 &fn-get_valid_values NA=default(me/valid_%0_values, v(valid_stat_values))
 
@@ -101,8 +101,57 @@ The following code will change at my whim. May be updated regularly, may not. Co
 
 &cgcheck-valid_values NA=iter(v(valid_stat_names), if(!t(member(setr(1, u(fn-get_valid_values)), setr(0, ulocal(fn-getstat, %0, itext(0))), |)), You must enter one of [itemize(%q1, |)] for [itext(0)].%R, if(lte(%q0, 0),The minimum allowable value for [itext(0)] is 1.%R, if(gt(%q0, 5), The maximum allowable value for [itext(0)] at character generation is 5.%R))), |, @@)
 
-&cgcheck-attribute_balance NA=if(!eq(comp(setr(0, u(fn-getstatdetail, %0, attribute_balance)), setr(1, sort(ladd(ulocal(fn-get_cg_cost, %0, Strength) [ulocal(fn-get_cg_cost, %0, Dexterity)] [ulocal(fn-get_cg_cost, %0, Stamina)]) [ladd(ulocal(fn-get_cg_cost, %0, Intelligence) [ulocal(fn-get_cg_cost, %0, Wits)] [ulocal(fn-get_cg_cost, %0, Resolve)])] [ladd(ulocal(fn-get_cg_cost, %0, Presence) [ulocal(fn-get_cg_cost, %0, Manipulation)] [ulocal(fn-get_cg_cost, %0, Composure)])], n))), 0), You must spread your points among attributes in three groups of [itemize(%q0)]. You have [itemize(%q1)].%R)
+&cgcheck-balance NA=if(!eq(comp(setr(0, u(fn-getstatdetail, %0, attribute_balance)), setr(1, sort(ladd(ulocal(fn-get_cg_cost, %0, Strength) [ulocal(fn-get_cg_cost, %0, Dexterity)] [ulocal(fn-get_cg_cost, %0, Stamina)]) [ladd(ulocal(fn-get_cg_cost, %0, Intelligence) [ulocal(fn-get_cg_cost, %0, Wits)] [ulocal(fn-get_cg_cost, %0, Resolve)])] [ladd(ulocal(fn-get_cg_cost, %0, Presence) [ulocal(fn-get_cg_cost, %0, Manipulation)] [ulocal(fn-get_cg_cost, %0, Composure)])], n))), 0), You must spread your points among attributes in three groups of [itemize(%q0)]. You have [itemize(%q1)].%R)
 
-&sheet-layout NA=stdsubheader(Attributes)%R %b[space(12)][center(Mental,20)] %b[center(Physical,19)] %b[center(Social,20)]%R %b[rjust(Power:,11)] [ljust(Intelligence:,14)] [rjust(u(fn-getstat,%0,Intelligence),5)] %b[ljust(Strength:,13)] [rjust(u(fn-getstat,%0,Strength),5)] %b[ljust(Presence:,14)] [rjust(u(fn-getstat,%0,Presence),5)]%R %b[rjust(Finesse:,11)] [ljust(Wits:,14)] [rjust(u(fn-getstat,%0,Wits),5)] %b[ljust(Dexterity:,13)] [rjust(u(fn-getstat,%0,Dexterity),5)] %b[ljust(Manipulation:,14)] [rjust(u(fn-getstat,%0,Manipulation),5)]%R %bResistance: [ljust(Resolve:,14)] [rjust(u(fn-getstat,%0,Resolve),5)] %b[ljust(Stamina:,13)] [rjust(u(fn-getstat,%0,Stamina),5)] %b[ljust(Composure:,14)] [rjust(u(fn-getstat,%0,Composure),5)]
+&layout NA=stdsubheader(Attributes)%R %b[space(12)][center(Mental,20)] %b[center(Physical,19)] %b[center(Social,20)]%R %b[rjust(Power:,11)] [ljust(Intelligence:,14)] [rjust(u(fn-getstat,%0,Intelligence),5)] %b[ljust(Strength:,13)] [rjust(u(fn-getstat,%0,Strength),5)] %b[ljust(Presence:,14)] [rjust(u(fn-getstat,%0,Presence),5)]%R %b[rjust(Finesse:,11)] [ljust(Wits:,14)] [rjust(u(fn-getstat,%0,Wits),5)] %b[ljust(Dexterity:,13)] [rjust(u(fn-getstat,%0,Dexterity),5)] %b[ljust(Manipulation:,14)] [rjust(u(fn-getstat,%0,Manipulation),5)]%R %bResistance: [ljust(Resolve:,14)] [rjust(u(fn-getstat,%0,Resolve),5)] %b[ljust(Stamina:,13)] [rjust(u(fn-getstat,%0,Stamina),5)] %b[ljust(Composure:,14)] [rjust(u(fn-getstat,%0,Composure),5)]
+
+@create NWoD Skills <NS>=10
+@set NS=HALT INHERIT
+@force me=@parent NS=v(CDB)
+@lock/use NS=stafflock/1
+@force me=&NS me=num(NS)
+
+&valid_stat_names NS=Academics|Athletics|Animal Ken|Computer|Brawl|Empathy|Crafts|Drive|Expression|Investigation|Firearms|Intimidation|Medicine|Larceny|Persuasion|Occult|Stealth|Socialize|Politics|Survival|Streetwise|Science|Weaponry|Subterfuge
+
+&valid_stat_values NS=0|1|2|3|4|5
+
+&fn-getstat NS=extract(setr(0, default(%0/_skills, 0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0)), member(%q0, %1, |), 1, |)
+
+&fn-get_valid_values NS=default(me/valid_%0_values, v(valid_stat_values))
+
+&cgcheck-valid_values NS=iter(v(valid_stat_names), if(!t(member(setr(1, u(fn-get_valid_values)), setr(0, ulocal(fn-getstat, %0, itext(0))), |)), You must enter one of [itemize(%q1, |)] for [itext(0)].%R, if(lte(%q0, 0),The minimum allowable value for [itext(0)] is 1.%R, if(gt(%q0, 5), The maximum allowable value for [itext(0)] at character generation is 5.%R))), |, @@)
+
+&cgcheck-balance NS=[setq(0, ladd(iter(Academics Computer Crafts Investigation Medicine Occult Politics Science, setr(3, ulocal(fn-getstat, %0, itext(0))) [gte(%q3, 5)])))][setq(1, ladd(iter(Athletics Brawl Drive Firearms Larceny Stealth Survival Weaponry, setr(3, ulocal(fn-getstat, %0, itext(0))) [gte(%q3, 5)])))][setq(2, ladd(iter(Animal Ken|Empathy|Expression|Intimidation|Persuasion|Socialize|Streetwise|Subterfuge, setr(3, ulocal(fn-getstat, %0, itext(0))) [gte(%q3, 5)], |)))][if(case(setr(1, revwords(sort(%q0 %q1 %q2, n))), setr(0, u(fn-getstatdetail, %0, skill_balance)), 0, 1), You must spread your points among skills in three groups of [itemize(%q0)]. You have [itemize(%q1)].%R)]
+
+&layout NS=stdsubheader(Skills)%R %b[ljc(center(Mental %(-3 unskilled%),24),24)] %b[ljc(center(Physical %(-1 unskilled%),23),23)] %b[ljust(center(Social %(-1 unskilled%),24),24)][iter(v(valid_stat_names), if(eq(mod(inum(0), 3), 1), %R %b)[ljust(itext(0)[if(hasattr(%0, _specialty-[edit(itext(0), %b, _)]), *)]:, if(!eq(mod(inum(0), 3), 2), 19, 18))][rjust(u(fn-getstat, %0, itext(0)), 5)]%b%b, |, @@)]
+
+
+@create NWoD Skill Specialties <NSS>=10
+@set NSS=HALT INHERIT
+@force me=@parent NSS=v(CDB)
+@lock/use NSS=stafflock/1
+@force me=&vS NSS=v(NS)
+
+&valid_stat_names NSS=iter(get(%vS/valid_stat_names), itext(0) Specialty, |, |)
+
+&valid_stat_characters NSS=ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789 ,.;:'"?/\-_+!@#$^&*()<>
+
+&valid_stat_length NSS=255
+
+@@ Correct to account for multiple specialties in a single skill. May need to change to a multilist.
+&fn-getstat NSS=get(%0/_specialty-[edit(%0, %b, _)])
+
+&fn-get_skill_value NSS=u(%vS/fn-getstat, %0, %1)
+
+&fn-get_skill_name NSS=extract(setr(0, get(%vS/valid_stat_names)), match(%q0, %0), 1, |)
+
+&cgcheck-points NSS=if(case(setr(0, u(fn-getstatdetail, %0, num_specialties)), setr(1, words(lattr(%0/_specialty-*))), 0, 1), You must have %q0 specialties. You have %q1.%R)
+
+&cgcheck-skills NSS=iter(lattr(%0/_specialty-*), if(t(ulocal(fn-get_skill_value, %0, setr(0, edit(after(itext(0), -), _, %b)))), You must have at least a 1 in %q0 in order to have a specialty in it.%R),, @@)
+
+@@ 13 char skillname, 2 chars space (: ), 21 chars specialty text, 2 columns (3 spaces between?)
+&layout NSS=stdsubheader(Skill Specialties)[iter(lattr(%0/_specialty-*), %R%b [setr(0, ulocal(fn-get_skill_name, edit(after(itext(0), -), _, %b)))]: [wrap(u(fn-getstat, %0, %q0), sub(75, add(strlen(%q0), 2)))], |, @@)]
+
+
 
 }}}
