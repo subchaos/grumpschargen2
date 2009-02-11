@@ -1,5 +1,5 @@
 #summary Code specification
-#labels F,Phase-Design
+#labels Featured,Phase-Design
 
 REQUIRED FEATURES - READ THIS FIRST!
 
@@ -128,7 +128,5 @@ STAFF COMMANDS
 +cgnuke Stat Name
 +cgnuke Stat Name/Detail
 +cgnuketype Stat Type
-
-
 
 
