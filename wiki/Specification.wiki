@@ -112,20 +112,34 @@ We WILL have a standardized validation format to compare stats. This is going to
 
 `+cg/unapprove <Player>` (also `+unapprove`)
 
-`+cg/newstat <Stat Type>:<Stat Name>=<Value>`
+`+cg/new <Stat Type>`
 
-`+cg/newstat <Stat Type>:<Stat Name>/<Stat Type>:<Detail>=<Value>`
+`+cg/new <Stat Type>:<Stat Name>=<Value>`
 
-`+cg/newtype <Stat Type>`
+`+cg/new <Stat Name>/<Stat Type>:<Detail>=<Value>`
 
-`+cg/restrict <Stat Name>=<Restrictions>` (adding new restrictions compounds the previous restrictions in an additive fashion)
+`+cg/edit <Stat Type>=<Stat Type>`
+
+`+cg/edit/name <Stat Name>=<New Name>`
+
+`+cg/edit/value <Stat Name>=<New Value>`
+
+`+cg/edit/name <Stat Name>/<Detail>=<New Detail Name>`
+
+`+cg/edit/value <Stat Name>/<Detail>=<New Detail Value>`
+
+`+cg/restrict <Stat Name>=<Restrictions>` (Does not compound)
 
 `+cg/unrestrict <Stat Name>`
 
+`+cg/restrict <Stat Name>/<Detail>=<Restrictions>`
+
+`+cg/unrestrict <Stat Name>/<Detail>`
+
 `+cg/note <Stat Name>=[<Notes>]` (enter nothing to remove)
 
-`+cg/nuke <Stat Name>`
+`+cg/nuke <Stat Type>`
 
-`+cg/nuke <Stat Name>/<Detail>`
+`+cg/nuke <Stat Type>:<Stat Name>`
 
-`+cg/nuketype <Stat Type>`
+`+cg/nuke <Stat Name>/<Detail Type>:<Detail>`
