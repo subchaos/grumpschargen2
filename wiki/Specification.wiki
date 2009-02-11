@@ -1,26 +1,6 @@
 #summary Code specification
 #labels Featured,Phase-Design
 
-== REQUIRED FEATURES - READ THIS FIRST! ==
-
-You are going to need a Function Invocation Level of at least 10,000.
-
-You are assumed to have an isstaff(dbref) function. The SGP Globals come with one.
-
-== GAME-SPECIFIC DIFFERENCES ==
-
-This section is likely only interesting to coders, and maybe not even those. I apologize in advance for any system bias I am perceived to be displaying. Read on at your own risk.
-
-`itemize(<list>, <delim>)` - equates to `elist(<list>, <phrase>, <delim>)` on Rhost. Rhost users may need to create a custom itemize function. There should be one included with the SGP Globals, however.
-
-`iter()` calls which are required to have no spaces have an output delimiter of for MUX compatibility. Rhost users will need to change this to `@@()`.
-
-Since there's no `ibreak()` on MUX, I've used `first(iter(blah, if(bleh, bloo|<term>|)), |<term>|)`. Waste of cycles, but easy to convert - just search for the `first |<term>|` and stick a `[ibreak()]` in its place, then remove the `first(` and the `, |<term>|)`. Note that you will have to do this by hand (or at least look before hitting replace all) because first( is used elsewhere in the code. Or you could just leave it as is - not like nowadays we can't afford the extra cycles.
-
-`streq()` has been replaced with `eq(comp(<string1>, <string2>), 0)` for MUX compatibility.
-
-Reverse strip (strip only characters NOT in the permitted list) has been replaced by `eq(comp(strip(<input>, <list of valid characters>),), 0)`
-
 == SPEC NOTES ==
 
 There are two types of stat in NWoD: simple and compound. A simple stat is a stat which has but one value, whether it's text or numerical. A compound stat is a simple stat - with the ability to attach additional stats to it.
