@@ -64,33 +64,35 @@ We WILL have a standardized validation format to compare stats. This is going to
 
 == NEW PLAYER COMMANDS ==
 
-`+cghelp` - Quick reference of chargen commands.
+`+cg/help` (also `+cghelp`) - Quick reference of chargen commands.
 
-`+cgset <Stat Name>=<Value>`
-  * +cgset Brawl=5
-  * +cgset Language (German)=1
-  * +cgset Hollow (Personal)=5
+`+cg` - Suggest what you need to do next, plus list a few vital commands.
 
-`+cgset <Stat Name>/<Detail>=<Value>`
-  * +cgset Hollow/Wards=2
-  * +cgset Brawl/Specialty=Right Hook
-  * +cgset Humanity/Megalomania=5
+`+cg <Stat Name>` - Check whether or not you meet a stat's prerequisites, if any.
 
-`+cgcheck`
+`+cg <Stat Name>/<Detail>` - Check whether or not you meet a stat detail's prerequisites, if any.
 
-`+cgcheck <Stat Type>`
+`+cg <Stat Name>=<Value>`
+  * +cg Brawl=5
+  * +cg Language (German)=1
+  * +cg Hollow (Personal)=5
 
-`+cgcheck <Stat Name>`
+`+cg Template=<Template>` - Special version. Applies a template. Will ask if you're sure first.
 
-`+cgcheck <Stat Name>/<Detail>`
+`+cg <Stat Name>/<Detail>=<Value>`
+  * +cg Hollow/Wards=2
+  * +cg Brawl/Specialty=Right Hook
+  * +cg Humanity/Megalomania=5
 
-`+cgcomplete` - Runs all checks and, if you pass, performs the "chargen complete" action.
+`+cg/check` - Check you for everything that needs to be set before you can be approved.
 
-`+cgwipe` - Wipe your stats. Will ask if you're sure first.
+`+cg/complete` - Runs all checks and, if you pass, performs the "chargen complete" action.
 
-`+cgtemplate` - Lists all templates.
+`+cg/wipe` - Wipe your stats. Will ask if you're sure first.
 
-`+cgtemplate <Template>` - Show a template.
+`+cg/template` - Lists all templates.
+
+`+cg/template <Template>` - Show a template.
 
 == ALL PLAYER COMMANDS ==
 
@@ -104,26 +106,26 @@ We WILL have a standardized validation format to compare stats. This is going to
 
 == STAFF COMMANDS ==
 
-`+cgstaffhelp` - Quick reference of staff chargen commands.
+`+cg/staffhelp` (also `+cgstaffhelp`) - Quick reference of staff chargen commands.
 
-`+cgapprove <Player>`
+`+cg/approve <Player>` (also `+approve`)
 
-`+cgunapprove <Player>`
+`+cg/unapprove <Player>` (also `+unapprove`)
 
-`+newstat <Stat Type>:<Stat Name>=<Value>`
+`+cg/newstat <Stat Type>:<Stat Name>=<Value>`
 
-`+newstat <Stat Type>:<Stat Name>/<Stat Type>:<Detail>=<Value>`
+`+cg/newstat <Stat Type>:<Stat Name>/<Stat Type>:<Detail>=<Value>`
 
-`+newtype <Stat Type>`
+`+cg/newtype <Stat Type>`
 
-`+cgrestrict <Stat Name>=<Restrictions>` (adding new restrictions compounds the previous restrictions in an additive fashion)
+`+cg/restrict <Stat Name>=<Restrictions>` (adding new restrictions compounds the previous restrictions in an additive fashion)
 
-`+cgunrestrict <Stat Name>`
+`+cg/unrestrict <Stat Name>`
 
-`+cgnote <Stat Name>=[<Notes>]` (enter nothing to remove)
+`+cg/note <Stat Name>=[<Notes>]` (enter nothing to remove)
 
-`+cgnuke <Stat Name>`
+`+cg/nuke <Stat Name>`
 
-`+cgnuke <Stat Name>/<Detail>`
+`+cg/nuke <Stat Name>/<Detail>`
 
-`+cgnuketype <Stat Type>`
+`+cg/nuketype <Stat Type>`
