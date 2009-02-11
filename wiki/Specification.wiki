@@ -132,20 +132,6 @@ We WILL have a standardized validation format to compare stats. This is going to
 
 `+cg/new <Stat Name>/<Stat Type>:<Detail>=<Value>`
 
-`+cg/name <Stat Type>=<New Type Name>`
-
-`+cg/name <Stat Name>=<New Stat Name>`
-
-`+cg/name <Stat Name>/<Detail>=<New Detail Name>`
-
-`+cg/type <Stat Name>=<New Stat Type>`
-
-`+cg/type <Stat Name>/<Detail>=<New Detail Type>`
-
-`+cg/value <Stat Name>=<New Value>`
-
-`+cg/value <Stat Name>/<Detail>=<New Detail Value>`
-
 `+cg/restrict <Stat Name>=<Restrictions>` (Does not compound)
 
 `+cg/unrestrict <Stat Name>`
@@ -163,3 +149,19 @@ We WILL have a standardized validation format to compare stats. This is going to
 `+cg/nuke <Stat Type>:<Stat Name>`
 
 `+cg/nuke <Stat Name>/<Detail Type>:<Detail>`
+
+The following functions may not be coded, since they would require, in theory, that we parse the playerbase and edit their stats. We're including them here as a possible stage 2 feature.
+
+`+cg/name <Stat Type>=<New Type Name>`
+
+`+cg/name <Stat Name>=<New Stat Name>`
+
+`+cg/name <Stat Name>/<Detail>=<New Detail Name>`
+
+`+cg/type <Stat Name>=<New Stat Type>`
+
+`+cg/type <Stat Name>/<Detail>=<New Detail Type>`
+
+`+cg/value <Stat Name>=<New Value>`
+
+`+cg/value <Stat Name>/<Detail>=<New Detail Value>`
