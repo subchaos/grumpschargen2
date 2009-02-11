@@ -1,0 +1,134 @@
+#summary Code specification
+#labels F,Phase-Design
+
+REQUIRED FEATURES - READ THIS FIRST!
+
+You are going to need a Function Invocation Level of at least 10,000.
+
+This code assumes you've created a stdheader, stdsubheader, and stdfooter for your game.
+
+You are assumed to have an isstaff(dbref) function. The SGP Globals come with one.
+
+GAME-SPECIFIC DIFFERENCES
+
+This section is likely only interesting to coders, and maybe not even those. I apologize in advance for any system bias I am perceived to be displaying. Read on at your own risk.
+
+itemize(<list>, <delim>) - equates to elist(<list>, <phrase>, <delim>) on Rhost. Rhost users may need to create a custom itemize function. There should be one included with the SGP Globals, however.
+iter() calls which are required to have no spaces have an output delimiter of for MUX compatibility. Rhost users will need to change this to @@().
+
+Since there's no ibreak() on MUX, I've used first(iter(blah, if(bleh, bloo|<term>|)), |<term>|). Waste of cycles, but easy to convert - just search for the first |<term>| and stick a [ibreak()] in its place, then remove the 'first(' and the ', |<term>|)'. Note that you will have to do this by hand (or at least look before hitting replace all) because first( is used elsewhere in the code. Or you could just leave it as is - not like nowadays we can't afford the extra cycles.
+
+streq() has been replaced with eq(comp(string1, string2), 0) for MUX compatibility.
+
+Reverse strip (strip only characters NOT in the permitted list) has been replaced by eq(comp(strip(input, list of valid characters),), 0)
+
+SPEC NOTES
+
+There are two types of stat in NWoD: simple and compound. A simple stat is a stat which has but one value, whether it's text or numerical. A compound stat is a simple stat - with the ability to attach additional stats to it.
+
+Simple stats are expressed like so: Stat Type:Stat Name:Value
+
+Compound stats are expressed like so: Stat Type:Stat Name:Value:List of simple stats separated by tildes
+
+To properly explain these, we're going to have to dissect the various parts of a stat.
+
+Stat Type: A stat type is the name of the group of stats (Attribute, Skill, Merit, etc) your chosen stat belongs to. We want to reuse these as much as possible, since they make it easy to group stats and auto-generate a sheet based on what the player's got stored on them. There are certain reserved stat types, all of which are used to help check a player for certain settings which will allow them to get restricted stats: Flag, which may be used to check a player for specific flags; Setting, which will look for an attribute on the player object; and I'm leaving room to add more, though I can't think of any right now.
+
+Stat Name: Strength, Brawl, etc. However! Some stats have special names. These include names like "Language (*)" and "Status (Police|City|Harpies|whatever)". We're going to work up a parsing code to allow you to make stat names change depending on value. Note that this only matters during chargen (and advancement) - on the player's sheet (or sheet object), they're going to have Merit:Language (German):1. Thus there will be no direct analog for that stat in the stat database - but that's okay, the parser will be able to spot it.
+
+Stat Value: Value has three options:
+
+1. A number (#) which is between 1 and 10, and may be treated as a pool, with temporary raises and losses. NO NWoD stat may go above 10. Most won't ever exceed 5. However, that's for the code you build off of this character generator to worry about - in the stat DB, numerical stats will be stored as "#". That implies that 0/10 is a correct value, as is 6, as is 0, as is 3. If you write code to raise or lower someone's stats according to game rules, make sure you account for the game rules within that code - the chargen will NOT prevent them from raising or rolling a stat at 10.
+
+2. A word or phrase (*) which may have any of the following characters: A-Z, 0-9, !, @, $, ^, `, ', ", ,, ., ?, -, +, space, and _. There are some characters missing. The reason for this? We are going to use them as separators, OR they are capable of causing the chargen's sheet to barf. The separator characters are :, |, and ~. The characters used to parse stat names and values are *, #, (, ), <, >, =, &, and |. The characters which may cause the chargen to barf are %, \, {, }, [, ], /, and ;. Everything else is whitelisted. If you want to add to that list of permissible characters, there's a setting for it - but think very carefully before you do and make sure that the character in question won't cause your game harm. (European characters should be all right - I just can't be arsed to add them myself and they might not work on some games, so I'm leaving them out for now.)
+
+3. A list of permissible text values, such as "Daeva|Gangrel|Mekhet|Nosferatu|Ventrue". Sorry, no parsing of pipes allowed on this one. I couldn't see any reason for the feature and so left it out.
+
+And finally, that list of simple stats separated by tildes (~): these are formatted EXACTLY the way regular simple stats are. They use the same parser and everything. They're separated by tilde and kept in the fourth slot ALWAYS so that you can use the same functions to parse them.
+
+Each stat is stored on its own attribute. Attribute name doesn't matter except that it begins with _stat-. Do NOT let your players add attributes that start with _stat-! They will be able to roll and prove them. Fortunately, attributes starting with _ are wizard-only on most games. That is assumed to be true here. If this assumption is incorrect, better edit your .conf file to protect those attributes, or there will be problems when players find that they can set their abilities to insane levels without spending XP.
+
+We WILL have a standardized validation format to compare stats. This is going to be the trickiest part of all. We will need it for merits, and to determine whether a person has the correct race/group to have stat X. Right now, it is as follows:
+
+CompareValue ComparisonOperator CompareValue
+
+A CompareValue may be expressed in the following ways:
+
+Stat Type:Stat Name - yes, you must use the fully qualified stat name for the stat you want. If you want it to apply to all Languages, you would use Merit:Language (*) - whereas if you want it to apply only to Language (German) you would need to express it as Merit:Language (German). It gets complicated, I know, having to repeat the entire thing, so I'll hopefully be including some shortcuts when I code the stat-adding portion of the CG.
+
+A number, any number.
+
+A piece of text, any valid piece of text using the rules above.
+
+Flag:FLAG - one word, no spaces. If you want to set special permissions on your players, this is one way to do it. For example, Flag:Blind would require that the player object has the BLIND flag in order to operate it. Not the greatest example, but presumably you have special your-game-only flags if you want to use this.
+
+Setting:SETTING - one word, no spaces. It's strongly recommended that you make the expected setting a wiz-only setting by starting it with a _. For example, you could check that the player has a setting of _TEMPLATE with the value "Feature Character" if you wanted. Staff would, of course, have to set the _TEMPLATE attribute on the player themselves, but you can easily make certain merits or stats check for it.
+
+
+A ComparisonOperator is one of the following: >, <, =
+
+You can group these expressions and then join them as in the standard programming language expressions. To group, use parentheses. Joining operators are | (OR) and & (AND). So you might end up with expressions like:
+
+Merit:Stunning Looks > 2 & Skill:Persuasion > 3
+
+(Attribute:Strength > 2 & Skill:Brawl > 2) | Attribute:Dexterity > 3
+
+Personal:Group = Police
+
+Setting:_TEMPLATE = Feature Character
+
+COMMAND SPEC
+
+Goal: Keep the list of commands simple and easy to remember. Multiple, easy to remember commands are preferred over single, overly complex commands.
+Goal: Don't step on any default commands like +set. Let's try to keep them prefixed with +cg and +xp.
+Goal: Follow the model set forth in GCG v1 - advanced players can set things to whatever they want, without being pestered with errors. Staff can, if they choose, manually approve these characters.
+Goal: Have a small suite of staff-only commands to override default chargen behavior.
+
+NEW PLAYER COMMANDS
+
++cghelp - Quick reference of chargen commands.
++cgset Stat Name=Value
+  +cgset Brawl=5
+  +cgset Language (German)=1
+  +cgset Hollow (Personal)=5
++cgset Stat Name/Detail=Value
+  +cgset Hollow/Wards=2
+  +cgset Brawl/Specialty=Right Hook
+  +cgset Humanity/Megalomania=5
++cgcheck
++cgcheck Stat Type
++cgcheck Stat Name
++cgcheck Stat Name/Detail
++cgcomplete - Runs all checks and, if you pass, performs the "chargen complete" action.
++cgwipe - Wipe your stats. Will ask if you're sure first.
++cgtemplate - Lists all templates.
++cgtemplate <Template> - Show a template.
+
+
+
+ALL PLAYER COMMANDS
+
++ref - List all types of stats, plus handy +statdb help info.
++ref Stat Type - List all stats in that type, plus any checks that will be run by type.
++ref Stat Name - List all details in that stat, plus formats available, plus values available, plus any checks that will be run on this stat.
++ref Stat Name/Detail - List all details on this detail, plus formats available, plus values available, plus any checks that will be run on this stat.
+
+
+STAFF COMMANDS
+
++cgstaffhelp - Quick reference of staff chargen commands.
++cgapprove Player
++cgunapprove Player
++newstat Stat Type:Stat Name=Value
++newstat Stat Type:Stat Name/Stat Type:Detail=Value
++newtype Stat Type
++cgrestrict Stat Name=Restrictions (adding new restrictions compounds the previous restrictions in an additive fashion)
++cgunrestrict Stat Name
++cgnote Stat Name=Notes (enter nothing to remove)
++cgnuke Stat Name
++cgnuke Stat Name/Detail
++cgnuketype Stat Type
+
+
+
+
