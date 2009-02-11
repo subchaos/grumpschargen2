@@ -96,6 +96,8 @@ We WILL have a standardized validation format to compare stats. This is going to
 
 == ALL PLAYER COMMANDS ==
 
+`+sheet` - View your sheet.
+
 `+ref` - List all types of stats, plus handy +statdb help info.
 
 `+ref <Stat Type>` - List all stats in that type, plus any checks that will be run by type.
@@ -118,6 +120,8 @@ We WILL have a standardized validation format to compare stats. This is going to
 
 `+cg/staffhelp` (also `+cgstaffhelp`) - Quick reference of staff chargen commands.
 
+`+sheet <Player>`
+
 `+cg/approve <Player>` (also `+approve`)
 
 `+cg/unapprove <Player>` (also `+unapprove`)
@@ -128,15 +132,15 @@ We WILL have a standardized validation format to compare stats. This is going to
 
 `+cg/new <Stat Name>/<Stat Type>:<Detail>=<Value>`
 
-`+cg/edit <Stat Type>=<Stat Type>`
+`+cg/rename <Stat Type>=<Stat Type>`
 
-`+cg/edit/name <Stat Name>=<New Name>`
+`+cg/rename <Stat Name>=<New Name>`
 
-`+cg/edit/value <Stat Name>=<New Value>`
+`+cg/rename <Stat Name>/<Detail>=<New Detail Name>`
 
-`+cg/edit/name <Stat Name>/<Detail>=<New Detail Name>`
+`+cg/edit <Stat Name>=<New Value>`
 
-`+cg/edit/value <Stat Name>/<Detail>=<New Detail Value>`
+`+cg/edit <Stat Name>/<Detail>=<New Detail Value>`
 
 `+cg/restrict <Stat Name>=<Restrictions>` (Does not compound)
 
