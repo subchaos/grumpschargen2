@@ -4,7 +4,6 @@
 
 The following code will change at my whim. May be updated regularly, may not. Comments/suggestions/modifications welcome - send along to woragrump@gmail.com.
 
-{{{
 @@ REQUIRED FEATURES - READ THIS FIRST!
 @@ -
 @@ You are going to need a Function Invocation Level of at least 10,000.
@@ -137,6 +136,8 @@ The following code will change at my whim. May be updated regularly, may not. Co
 @@ -
 @@ -
 @@ -
+
+{{{
 
 @create Stat DataBase <STDB>=10
 @set STDB=HALT
