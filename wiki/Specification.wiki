@@ -132,15 +132,19 @@ We WILL have a standardized validation format to compare stats. This is going to
 
 `+cg/new <Stat Name>/<Stat Type>:<Detail>=<Value>`
 
-`+cg/rename <Stat Type>=<Stat Type>`
+`+cg/name <Stat Type>=<New Type Name>`
 
-`+cg/rename <Stat Name>=<New Name>`
+`+cg/name <Stat Name>=<New Stat Name>`
 
-`+cg/rename <Stat Name>/<Detail>=<New Detail Name>`
+`+cg/name <Stat Name>/<Detail>=<New Detail Name>`
 
-`+cg/edit <Stat Name>=<New Value>`
+`+cg/type <Stat Name>=<New Stat Type>`
 
-`+cg/edit <Stat Name>/<Detail>=<New Detail Value>`
+`+cg/type <Stat Name>/<Detail>=<New Detail Type>`
+
+`+cg/value <Stat Name>=<New Value>`
+
+`+cg/value <Stat Name>/<Detail>=<New Detail Value>`
 
 `+cg/restrict <Stat Name>=<Restrictions>` (Does not compound)
 
