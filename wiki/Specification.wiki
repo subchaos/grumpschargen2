@@ -138,6 +138,8 @@ We WILL have a standardized validation format to compare stats. This is going to
 
 `+cg/note <Stat Name>=[<Notes>]` (enter nothing to remove)
 
+`+cg/note <Stat Name>/<Detail>=[<Notes>]` (enter nothing to remove)
+
 `+cg/nuke <Stat Type>`
 
 `+cg/nuke <Stat Type>:<Stat Name>`
