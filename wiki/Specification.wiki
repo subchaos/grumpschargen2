@@ -5,8 +5,6 @@
 
 You are going to need a Function Invocation Level of at least 10,000.
 
-This code assumes you've created a stdheader, stdsubheader, and stdfooter for your game.
-
 You are assumed to have an isstaff(dbref) function. The SGP Globals come with one.
 
 == GAME-SPECIFIC DIFFERENCES ==
