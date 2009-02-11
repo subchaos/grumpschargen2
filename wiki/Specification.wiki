@@ -104,6 +104,16 @@ We WILL have a standardized validation format to compare stats. This is going to
 
 `+ref <Stat Name>/<Detail>` - List all details on this detail, plus formats available, plus values available, plus any checks that will be run on this stat.
 
+`+xp` - List how much XP you have, plus handy spending commands (if in XP-spending-safe area).
+
+`+xp/check <Stat Name>` - Lists how much it would cost to buy the next level of that stat, and whether you meet the prerequisites.
+
+`+xp/check <Stat Name>/<Detail>` - As above, but for sub-stats.
+
+`+xp/buy <Stat Name>` - Spend XP on a stat.
+
+`+xp/buy <Stat Name>/<Detail>` - As above, but for sub-stats.
+
 == STAFF COMMANDS ==
 
 `+cg/staffhelp` (also `+cgstaffhelp`) - Quick reference of staff chargen commands.
