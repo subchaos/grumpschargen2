@@ -64,25 +64,25 @@ We WILL have a standardized validation format to compare stats. This is going to
 
 == NEW PLAYER COMMANDS ==
 
-`+cg/help` (also `+cghelp`) - Quick reference of chargen commands.
+`+cg/help` (also `+cghelp`) - Quick reference of chargen commands. *Coded.*
 
 `+cg` - Suggest what you need to do next, plus list a few vital commands.
 
-`+cg <Stat Name>` - Check whether or not you meet a stat's prerequisites, if any.
+`+cg <Stat Name or Type>` - Check whether or not you meet a stat's prerequisites, if any. *Coded (equivalent to +ref <Stat Name or Type>)*
 
-`+cg <Stat Name>/<Detail>` - Check whether or not you meet a stat detail's prerequisites, if any.
+`+cg <Stat Name>/<Detail>` - Check whether or not you meet a stat detail's prerequisites, if any. *Coded (equivalent to +ref <Stat Name>/<Detail>)*
 
 `+cg <Stat Name>=<Value>`
   * +cg Brawl=5
   * +cg Language (German)=1
   * +cg Hollow (Personal)=5
 
-`+cg Template=<Template>` - Special version. Applies a template. Will ask if you're sure first.
-
 `+cg <Stat Name>/<Detail>=<Value>`
   * +cg Hollow/Wards=2
   * +cg Brawl/Specialty=Right Hook
   * +cg Humanity/Megalomania=5
+
+`+cg Template=<Template>` - Special version. Applies a template. Will ask if you're sure first.
 
 `+cg/check` - Check you for everything that needs to be set before you can be approved.
 
@@ -98,13 +98,13 @@ We WILL have a standardized validation format to compare stats. This is going to
 
 `+sheet` - View your sheet.
 
-`+ref` - List all types of stats, plus handy +statdb help info.
+`+ref` - List all types of stats, plus handy stat database help info. *Coded.*
 
-`+ref <Stat Type>` - List all stats in that type, plus any checks that will be run by type.
+`+ref <Stat Type>` - List all stats in that type, plus any checks that will be run by type. *Coded.*
 
-`+ref <Stat Name>` - List all details in that stat, plus formats available, plus values available, plus any checks that will be run on this stat.
+`+ref <Stat Name>` - List all details in that stat, plus formats available, plus values available, plus any checks that will be run on this stat. *Coded.*
 
-`+ref <Stat Name>/<Detail>` - List all details on this detail, plus formats available, plus values available, plus any checks that will be run on this stat.
+`+ref <Stat Name>/<Detail>` - List all details on this detail, plus formats available, plus values available, plus any checks that will be run on this stat. *Coded.*
 
 `+xp` - List how much XP you have, plus handy spending commands (if in XP-spending-safe area).
 
@@ -126,11 +126,11 @@ We WILL have a standardized validation format to compare stats. This is going to
 
 `+cg/unapprove <Player>` (also `+unapprove`)
 
-`+cg/new <Stat Type>`
+`+cg/new <Stat Type>` *Coded.*
 
-`+cg/new <Stat Type>:<Stat Name>=<Value>`
+`+cg/new <Stat Type>:<Stat Name>=<Value>` *Coded.*
 
-`+cg/new <Stat Name>/<Stat Type>:<Detail>=<Value>`
+`+cg/new <Stat Name>/<Stat Type>:<Detail>=<Value>` *Coded.*
 
 `+cg/restrict <Stat Name>=<Restrictions>` (Does not compound)
 
