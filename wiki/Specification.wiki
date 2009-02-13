@@ -68,9 +68,9 @@ We WILL have a standardized validation format to compare stats. This is going to
 
 `+cg` - Suggest what you need to do next, plus list a few vital commands.
 
-`+cg <Stat Name or Type>` - Check whether or not you meet a stat's prerequisites, if any. *Coded (equivalent to +ref <Stat Name or Type>)*
+`+cg <Stat Name or Type>` - Check whether or not you meet a stat's prerequisites, if any. *Coded (equivalent to `+ref <Stat Name or Type>`)*
 
-`+cg <Stat Name>/<Detail>` - Check whether or not you meet a stat detail's prerequisites, if any. *Coded (equivalent to +ref <Stat Name>/<Detail>)*
+`+cg <Stat Name>/<Detail>` - Check whether or not you meet a stat detail's prerequisites, if any. *Coded (equivalent to `+ref <Stat Name>/<Detail>`)*
 
 `+cg <Stat Name>=<Value>`
   * +cg Brawl=5
