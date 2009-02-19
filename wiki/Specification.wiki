@@ -61,6 +61,7 @@ Points, in White Wolf games, come in several types.
   * Grouped points: You get X, Y, and Z points to spread among groups A, B, and C
   * Single-type points: You get X virtues, Y backgrounds, and Z merits
   * Single-stat points: You get X points for willpower, Y points for arete, etc.
+  * Calculated stats: Stat X = Stat Y + Stat Z, Stat X = Least of Stat Y or Stat Z
   * Values that spend their points from alternate pools: Freebies, merits, etc.
 
 Each of these types must be handled differently.
@@ -76,9 +77,27 @@ We _will_ call these groups "Attributes1", "Attributes2", "Attributes3", "Skills
 
 *Single Type Points*: Stats are already automatically grouped by type. It should be simple enough to type, say, `+cg/points Virtue=7` and make sure everyone has access to 7 points of virtues. It enforces a maximum - someone could still spend 2 of the seven points they have for virtues, and discard the rest. To enforce a minimum, `+cg/min Virtue=1` would be a good start. Then, if you don't want someone to pay points for the first point, `+cg/default Virtue=1` would make that first point free.
 
-*Single Stat Points*: 
+*Single Stat Points*: `+cg/points Morality=7` - not much fancy here. This does NOT take into account calculated stats - if Humanity in your game is a calculated stat, look elsewhere.
 
+*Calculated Stats*: Special language is needed to describe calculated stats. First, you create the stat:
 
+`+cg/new Basic:Size=5`
+`+cg/new Basic:Speed=#`
+
+Then, you set the formula for the stat:
+
+`+cg/formula Speed=Basic:Size + Attribute:Strength + Attribute:Dexterity + Merit:Fleet of Foot + Kith:Runnerswift:2`
+
+Stats that don't produce a numerical value evaluate to 1 or 0, or to whatever the third value is, if there is one.
+
+The third value can also be a stat, say: Pool:Wyrd.
+
+It can even be a formula: Greatest:Attribute:Strength|Attribute:Dexterity|Attribute:Stamina
+
+There are two special types of formula: Greatest and Least. They'll take a pipe-separated list of stats and translate them into numbers, then take the highest of those numbers, or the lowest. This should give you a hint for, say, Defense:
+
+`+cg/new Basic:Defense=#`
+`+cg/formula Defense=Least:Attribute:Wits|Attribute:Dexterity`
 
 == COMMAND SPEC ==
 
