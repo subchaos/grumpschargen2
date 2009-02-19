@@ -88,15 +88,16 @@ Then, you set the formula for the stat:
 
 `+cg/formula Speed=Basic:Size + Attribute:Strength + Attribute:Dexterity + Merit:Fleet of Foot + Kith:Runnerswift:2`
 
-Stats that don't produce a numerical value evaluate to 1 or 0, or to whatever the third value is, if there is one.
+Stats that don't produce a numerical value evaluate to 1 or 0, or to whatever the third value is, if there is one. The third value *must* evaluate to a number, though.
 
-The third value can also be a stat, say: Pool:Wyrd.
+The third value can also be a stat, say: `Pool:Wyrd`.
 
-It can even be a formula: Greatest:Attribute:Strength|Attribute:Dexterity|Attribute:Stamina
+It can even be a formula: `Greatest:Attribute:Strength|Attribute:Dexterity|Attribute:Stamina`
 
 There are two special types of formula: Greatest and Least. They'll take a pipe-separated list of stats and translate them into numbers, then take the highest of those numbers, or the lowest. This should give you a hint for, say, Defense:
 
 `+cg/new Basic:Defense=#`
+
 `+cg/formula Defense=Least:Attribute:Wits|Attribute:Dexterity`
 
 == COMMAND SPEC ==
