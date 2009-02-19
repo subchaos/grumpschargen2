@@ -205,7 +205,7 @@ Costs are considered to apply across all tiers. CG points are always 1:1.
 
 `+cg/new <Stat Name>/<Stat Type>:<Detail>=<Value>` *Coded.*
 
-`+cg/group [Attributes1, Attributes2, Attributes3, Skills1, Skills2, or Skills3]=<List of stat names>` - Manage the six default point groups.
+`+cg/group [Attributes1, Attributes2, Attributes3, Skills1, Skills2, or Skills3]=<List of stat names>` - Manage the six default point groups. *Coded.*
 
 `+cg/tier <New or Old Tier Name>=<Restrictions>` - Tiers are point groups.
 
@@ -273,15 +273,15 @@ The following functions may not be coded, since they would require, in theory, t
 
   * Greatest
   * Least
-  * Attributes1
-  * Attributes2
-  * Attributes3
-  * Skills1
-  * Skills2
-  * Skills3
   * Tier
   * Template
   * Setting
   * Flag
   * CurrentValue
   * NewValue
+  * Attributes1
+  * Attributes2
+  * Attributes3
+  * Skills1
+  * Skills2
+  * Skills3
