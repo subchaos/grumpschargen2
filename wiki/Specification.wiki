@@ -7,7 +7,7 @@ There are two types of stat in NWoD: simple and compound. A simple stat is a sta
 
 _Simple stats_ are expressed like so: `Stat Type:Stat Name:Value`
 
-_Compound stats_ are expressed like so: `Stat Type:Stat Name:Value:List of simple stats separated by ~tildes`
+_Compound stats_ are expressed like so: `Stat Type:Stat Name:Value:List of simple stat attributes separated by ~tildes`
 
 To properly explain these, we're going to have to dissect the various parts of a stat.
 
@@ -20,7 +20,7 @@ To properly explain these, we're going to have to dissect the various parts of a
     # A word or phrase (`*`) which may have any of the following characters: `A-Z`, `0-9`, `!`, `@`, `$`, `^`, ```, `'`, `"`, `,`, `.`, `?`, `space`, and `_`. There are some characters missing. The reason for this? We are going to use them as separators, _or_ they are capable of causing the chargen's sheet to barf. See [#Restricted_Characters] and [#Reserved_Characters] for details. Everything else is whitelisted. If you want to add to that list of permissible characters, there's a setting for it - but think very carefully before you do and make sure that the character in question won't cause your game harm. (European characters should be all right - I just can't be arsed to add them myself and they might not work on some games, so I'm leaving them out for now.)
     # A list of permissible text values, such as "`Daeva|Gangrel|Mekhet|Nosferatu|Ventrue`". You could stick a `#` or a `*` in there, though I'm not sure why you'd need to. You cannot, however, make a list like so: `Peter|Piper|Picked|A|Peck|Of|Pickled|Peppers (Or|Maybe|Something|Else|From|This|List)|And|So|On`. The internal pipes would get confused, sorry. Since I can't think of a use for that trick, I'm not going to code a way around it.
 
-And finally, that list of simple stats separated by tildes (`~`): these are formatted EXACTLY the way regular simple stats are. They use the same parser and everything. They're separated by tilde and kept in the fourth slot ALWAYS so that you can use the same functions to parse them.
+And finally, that list of stat attributes separated by tildes (`~`): these are the names of stats
 
 Each stat is stored on its own attribute. Attribute name doesn't matter except that it begins with `_stat-`. Do NOT let your players add attributes that start with `_stat-`! They will be able to roll and prove them. Fortunately, attributes starting with `_` are wizard-only on most games. That is assumed to be true here. If this assumption is incorrect, better edit your .conf file to protect those attributes, or there will be problems when players find that they can set their abilities to insane levels without spending XP.
 
@@ -122,6 +122,24 @@ Or, for you OWoD fans:
 `+cg/initialcost XP/Ability=3`
 
 Costs are considered to apply across all tiers. CG points are always 1:1.
+
+One more for the road, and this is one of those absolutely annoying features of White Wolf Games: Substats. Let's see here.
+
+`+cg/new Merit:Hollow (*)=#`
+
+`+cg/type Hollow`
+
+`+cg/new Hollow:Wards=#`
+
+`+cg/new Hollow:Amenities=#`
+
+`+cg/new Hollow:Doors=#`
+
+`+cg/points Hollow=Merit:Hollow` - set the number of points used for the Hollow group of stats to the number of points the player currently has in Hollow.
+
+`+cg/max Hollow=Merit:Hollow` - Don't let them go any higher than their current rating.
+
+There. Substats. That was nowhere near as disgusting as I thought it was going to be.
 
 == COMMAND SPEC ==
 
