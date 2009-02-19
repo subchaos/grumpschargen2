@@ -82,7 +82,7 @@ We _will_ call these groups "Attributes1", "Attributes2", "Attributes3", "Skills
 *Calculated Stats*: Special language is needed to describe calculated stats. First, you create the stat:
 
 `+cg/new Basic:Size=5`
-`+cg/new Basic:Speed=#`
+`+cg/new Pool:Speed=#`
 
 Then, you set the formula for the stat:
 
@@ -96,9 +96,35 @@ It can even be a formula: `Greatest:Attribute:Strength|Attribute:Dexterity|Attri
 
 There are two special types of formula: Greatest and Least. They'll take a pipe-separated list of stats and translate them into numbers, then take the highest of those numbers, or the lowest. This should give you a hint for, say, Defense:
 
-`+cg/new Basic:Defense=#`
+`+cg/new Pool:Defense=#`
 
 `+cg/formula Defense=Least:Attribute:Wits|Attribute:Dexterity`
+
+If, for some reason, you allow players to buy a calculated stat up, the _minimum_ value of that stat will be the calculated result, the maximum will be whatever you set (or the default of 10), and the total value will be the purchased points plus the calculated value.
+
+*Points drawn from other pools*: This gets _speshul_. And irritating. When you can buy your Blood Potency up with 3 Merit points, figuring out how many points the user has spent is irksome. We'll deal with that by creating point pools and setting the cost of buying certain stats in them. So:
+
+`+cg/pool Merit`
+
+`+cg/cost Merit/Blood Potency=3`
+
+`+cg/pool XP`
+
+`+cg/cost XP/Attribute=CurrentValue * 5`
+
+Or, for you OWoD fans:
+
+`+cg/cost XP/Ability=NewValue * 2`
+
+`+cg/initialcost XP/Ability=3`
+
+Costs are considered to apply across all tiers. Sorry.
+
+== POINT COST ==
+
+CG point cost is always assumed to be 1:1. If you want to change that... go code yer own.
+
+
 
 == COMMAND SPEC ==
 
