@@ -52,6 +52,34 @@ We WILL have a standardized validation format to compare stats. This is going to
 
   `Setting:_TEMPLATE = Feature Character`
 
+== CG POINTS ==
+
+CG points apply to numerical stats only. If a stat does not have a point value, it is assumed to have a point max of 0, and thus be un-buyable at chargen.
+
+Points, in White Wolf games, come in several types.
+
+  * Grouped points: You get X, Y, and Z points to spread among groups A, B, and C
+  * Single-type points: You get X virtues, Y backgrounds, and Z merits
+  * Single-stat points: You get X points for willpower, Y points for arete, etc.
+  * Values that spend their points from alternate pools: Freebies, merits, etc.
+
+Each of these types must be handled differently.
+
+*Grouped Points*: These are a pain in the ass. Fortunately, there seem to be only two: Attributes and Abilities/Skills. Since there are only two, we'll include a few default checks that handle the two types of stats they apply to. We'll allow staff to change which skill/ability/attribute goes into which group, but we'll calculate the point totals of the groups in the same way every time. I expect we'll need something like the following command:
+
+`+cg/group Attributes1=Strength|Dexterity|Stamina`
+`+cg/group Attributes2=Presence|Manipulation|Composure`
+`+cg/points Attribute=7 5 3`
+...etc.
+
+We _will_ call these groups "Attributes1", "Attributes2", "Attributes3", "Skills1", "Skills2", and "Skills3". I know there are fancier names for these groups in the various WoD setups; these are keywords for my chargen only to make it as cross-compatible as possible. We're going with "Skills" instead of "Abilities" because in theory more people will want this for NWoD than old as there are actually new _books_ for NWoD. (Also, "Skills" is shorter.) This does NOT affect the sheet or anything like it - it's just how things will be grouped for the code's purposes. We're allowing plurals in this one instance because they make sense. This is a bit of a nasty hardcode hack, but since there are only two places it needs done, it beats the alternative: coding an entire grouping system for two sets of stats. Ugh.
+
+*Single Type Points*: Stats are already automatically grouped by type. It should be simple enough to type, say, `+cg/points Virtue=7` and make sure everyone has access to 7 points of virtues. It enforces a maximum - someone could still spend 2 of the seven points they have for virtues, and discard the rest. To enforce a minimum, `+cg/min Virtue=1` would be a good start. Then, if you don't want someone to pay points for the first point, `+cg/default Virtue=1` would make that first point free.
+
+*Single Stat Points*: 
+
+
+
 == COMMAND SPEC ==
 
 *Goal*: Keep the list of commands simple and easy to remember. Multiple, easy to remember commands are preferred over single, overly complex commands.
@@ -83,6 +111,8 @@ We WILL have a standardized validation format to compare stats. This is going to
   * +cg Humanity/Megalomania=5
 
 `+cg Template=<Template>` - Special version. Applies a template. Will ask if you're sure first.
+
+`+cg Tier=<Tier>` - Special version. Checks your points based on a different tier than the one you're listed in by default.
 
 `+cg/check` - Check you for everything that needs to be set before you can be approved.
 
@@ -132,6 +162,20 @@ We WILL have a standardized validation format to compare stats. This is going to
 
 `+cg/new <Stat Name>/<Stat Type>:<Detail>=<Value>` *Coded.*
 
+`+cg/group [Attributes1, Attributes2, Attributes3, Skills1, Skills2, or Skills3]=<List of stat names> - Manage the six default point groups.
+
+`+cg/tier <New or Old Tier Name>=<Restrictions>` - Tiers are point groups.
+
+`+cg/tier <Tier Name>/<Stat Type or Name>=<Points>`
+
+`+cg/tier/nuke <Tier Name>`
+
+`+cg/template <New Template Name>=<Tier Name>` - Templates are predefined stats.
+
+`+cg/template <Template Name>/<Stat Name>=<Value>`
+
+`+cg/template/nuke <Template Name>`
+
 `+cg/restrict <Stat Name>=<Restrictions>` (Does not compound)
 
 `+cg/unrestrict <Stat Name>`
@@ -139,6 +183,22 @@ We WILL have a standardized validation format to compare stats. This is going to
 `+cg/restrict <Stat Name>/<Detail>=<Restrictions>`
 
 `+cg/unrestrict <Stat Name>/<Detail>`
+
+`+cg/min <Stat Type>=<Value>`
+
+`+cg/min <Stat Name>=<Value>`
+
+`+cg/max <Stat Type>=<Value>`
+
+`+cg/max <Stat Name>=<Value>`
+
+`+cg/default <Stat Type>=<Value>` - the default will not be charged CG Points for.
+
+`+cg/default <Stat Name>=<Value>`
+
+`+cg/points <Stat Type>=<Value>` - number of points players have to spend on that type by default.
+
+`+cg/points <Stat Name>=<Value>`
 
 `+cg/note <Stat Name>=[<Notes>]` (enter nothing to remove)
 
