@@ -118,13 +118,7 @@ Or, for you OWoD fans:
 
 `+cg/initialcost XP/Ability=3`
 
-Costs are considered to apply across all tiers. Sorry.
-
-== POINT COST ==
-
-CG point cost is always assumed to be 1:1. If you want to change that... go code yer own.
-
-
+Costs are considered to apply across all tiers. CG points are always 1:1.
 
 == COMMAND SPEC ==
 
@@ -271,3 +265,20 @@ The following functions may not be coded, since they would require, in theory, t
 `+cg/value <Stat Name>=<New Value>`
 
 `+cg/value <Stat Name>/<Detail>=<New Detail Value>`
+
+== Reserved Words ==
+
+  * Greatest
+  * Least
+  * Attributes1
+  * Attributes2
+  * Attributes3
+  * Skills1
+  * Skills2
+  * Skills3
+  * Tier
+  * Template
+  * Setting
+  * Flag
+  * CurrentValue
+  * NewValue
