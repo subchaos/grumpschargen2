@@ -107,9 +107,7 @@ If, for some reason, you allow players to buy a calculated stat up, the _minimum
 
 *Points drawn from other pools*: This gets _speshul_. And irritating. When you can buy your Blood Potency up with 3 Merit points, figuring out how many points the user has spent is irksome. We'll deal with that by creating point pools and setting the cost of buying certain stats in them. So:
 
-`+cg/pool Merit`
-
-`+cg/cost Merit/Blood Potency=3`
+`+cg/cost Points:Merit/Blood Potency=3`
 
 `+cg/pool XP`
 
@@ -297,6 +295,7 @@ The following functions may not be coded, since they would require, in theory, t
   * Least
   * CurrentValue
   * NewValue
+  * Points
   * Attributes1
   * Attributes2
   * Attributes3
