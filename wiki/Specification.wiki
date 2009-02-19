@@ -69,8 +69,11 @@ Each of these types must be handled differently.
 *Grouped Points*: These are a pain in the ass. Fortunately, there seem to be only two: Attributes and Abilities/Skills. Since there are only two, we'll include a few default checks that handle the two types of stats they apply to. We'll allow staff to change which skill/ability/attribute goes into which group, but we'll calculate the point totals of the groups in the same way every time. I expect we'll need something like the following command:
 
 `+cg/group Attributes1=Strength|Dexterity|Stamina`
+
 `+cg/group Attributes2=Presence|Manipulation|Composure`
+
 `+cg/points Attribute=7 5 3`
+
 ...etc.
 
 We _will_ call these groups "Attributes1", "Attributes2", "Attributes3", "Skills1", "Skills2", and "Skills3". I know there are fancier names for these groups in the various WoD setups; these are keywords for my chargen only to make it as cross-compatible as possible. We're going with "Skills" instead of "Abilities" because in theory more people will want this for NWoD than old as there are actually new _books_ for NWoD. (Also, "Skills" is shorter.) This does NOT affect the sheet or anything like it - it's just how things will be grouped for the code's purposes. We're allowing plurals in this one instance because they make sense. This is a bit of a nasty hardcode hack, but since there are only two places it needs done, it beats the alternative: coding an entire grouping system for two sets of stats. Ugh.
