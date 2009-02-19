@@ -162,7 +162,7 @@ We _will_ call these groups "Attributes1", "Attributes2", "Attributes3", "Skills
 
 `+cg/new <Stat Name>/<Stat Type>:<Detail>=<Value>` *Coded.*
 
-`+cg/group [Attributes1, Attributes2, Attributes3, Skills1, Skills2, or Skills3]=<List of stat names> - Manage the six default point groups.
+`+cg/group [Attributes1, Attributes2, Attributes3, Skills1, Skills2, or Skills3]=<List of stat names>` - Manage the six default point groups.
 
 `+cg/tier <New or Old Tier Name>=<Restrictions>` - Tiers are point groups.
 
