@@ -158,7 +158,7 @@ One more for the road, and this is one of those absolutely annoying features of 
 
 `+cg/points Default/Hollow=Merit:Hollow` - set the number of points used for the Hollow group of stats to the number of points the player currently has in Hollow.
 
-`+cg/max Hollow=Merit:Hollow` - Don't let them go any higher than their current rating.
+`+cg/max Default/Hollow=Merit:Hollow` - Don't let them go any higher than their current rating.
 
 There. Substats. That was nowhere near as disgusting as I thought it was going to be.
 
@@ -231,27 +231,27 @@ There. Substats. That was nowhere near as disgusting as I thought it was going t
 
 `+cg/group [Attributes1, Attributes2, Attributes3, Skills1, Skills2, or Skills3]=<List of stat names>` - Manage the six default point groups. *Coded.*
 
-`+cg/tier <Tier Name>` - Create a new tier.
-
-`+cg/tier <Tier Name>/<Stat Type or Name, or pool name>=<Points>`
+`+cg/tier <Tier Name>` - Tiers are groups of points available to players.
 
 `+cg/tier/nuke <Tier Name>`
 
 `+cg/template <New Template Name>` - Templates are predefined stats.
 
-`+cg/template <Template Name>/<Stat Name>=<Value>`
+`+cg/template <Template Name>/<Stat Name>=<Value>` - Set the stats a template sets.
 
 `+cg/template/nuke <Template Name>`
 
-`+cg/restrict <Stat Name, Type, or Tier>=<Restrictions>` (Does not compound)
+`+cg/restrict <Stat Name, Stat Type, or Tier>=<Restrictions>` (Does not compound)
 
-`+cg/unrestrict <Stat Name>`
+`+cg/unrestrict <Stat Name, Stat Type, or Tier>`
 
-`+cg/min <Stat Type or Name>=<Value>`
+`+cg/points <Tier Name>/<Stat Type or Name, or pool name>=<Points>`
 
-`+cg/max <Stat Type or Name>=<Value>`
+`+cg/min <Tier Name>/<Stat Type or Name>=<Value>`
 
-`+cg/default <Stat Type or Name>=<Value>` - the default will not be charged CG Points for.
+`+cg/max <Tier Name>/<Stat Type or Name>=<Value>`
+
+`+cg/default <Tier Name>/<Stat Type or Name>=<Value>` - the default will not be charged CG Points for.
 
 `+cg/formula <Stat Name>=<Formula>`
 
@@ -260,8 +260,6 @@ There. Substats. That was nowhere near as disgusting as I thought it was going t
 `+cg/initialcost [<Pool Name>/]<Stat Type or Name>=<Formula>`
 
 `+cg/note <Stat Name>=[<Notes>]` (enter nothing to remove)
-
-`+cg/note <Stat Name>/<Detail>=[<Notes>]` (enter nothing to remove)
 
 `+cg/nuke <Stat Type>`
 
