@@ -75,7 +75,7 @@ Syntax will be something like:
 
 *Note*: tiers are distinct from templates, which are predefined groups of points which may not fit within the tier the PC has selected and thus might cause errors.
 
-*Goal*: Do NOT force players to choose a point group explicitly unless they're doing something _special_. Try to guess what point group they're going for and grade them accordingly.
+*Goal*: Do NOT force players to choose a tier explicitly unless they're doing something _special_. Try to guess what tier they're going for and grade them accordingly.
 
 Points, in White Wolf games, come in several types.
 
