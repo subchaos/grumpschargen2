@@ -1,7 +1,7 @@
 #summary Code specification
 #labels Featured,Phase-Design
 
-== SPEC NOTES ==
+== STATS ==
 
 There are two types of stat in NWoD: simple and compound. A simple stat is a stat which has but one value, whether it's text or numerical. A compound stat is a simple stat - with the ability to attach additional stats to it.
 
@@ -52,17 +52,42 @@ We WILL have a standardized validation format to compare stats. This is going to
 
   `Setting:_TEMPLATE = Feature Character`
 
-== CG POINTS ==
+== POINTS ==
 
-CG points apply to numerical stats only. If a stat does not have a point value, it is assumed to have a point max of 0, and thus be un-buyable at chargen.
+Points come in groups. A group covers all the points for all the stats available to the individual for whatever point group they're set to use. A group can be restricted - you must be a vampire to have X point group, for example.
+
+There is a Default pointgroup which MUST be set up in order for this chargen to work.
+
+A group may have multiple point values set for it. It is assumed to use the values set in the Default pointgroup unless they're overridden. A value of 0 (the default) means the player does not have access to that stat or stat type. You can override a default value with 0 if you want a player to have no access to the default.
+
+Points apply to numerical stats only. If a stat does not have a point value anywhere, even in the default set, it is assumed to have a point max of 0, and thus be un-buyable at chargen.
+
+Point groups might consist of:
+
+  * Default (everyone has these base points at chargen)
+  * Mortal (slightly lower points for mortals)
+  * Vampire (slightly higher points for vampires)
+  * etc.
+
+Syntax will be something like:
+
+`+cg/pg Default` - Set the current point group for editing and create it if it doesn't exist.
+
+`+cg/points Merit=7`
+
+`+cg/points Humanity=2`
+
+Note that these are distinct from templates, which are predefined groups of points which may not fit within the range of points for your selected group.
+
+*Goal*: Do NOT force players to choose a point group explicitly unless they're doing something _special_. Try to guess what point group they're going for and grade them accordingly.
 
 Points, in White Wolf games, come in several types.
 
   * Grouped points: You get X, Y, and Z points to spread among groups A, B, and C
   * Single-type points: You get X virtues, Y backgrounds, and Z merits
-  * Single-stat points: You get X points for willpower, Y points for arete, etc.
+  * Single-stat points: You get X points for humanity, etc.
   * Calculated stats: Stat X = Stat Y + Stat Z, Stat X = Least of Stat Y or Stat Z
-  * Values that spend their points from alternate pools: Freebies, merits, etc.
+  * Values that spend their points from alternate pools: Freebies, merit points, XP, etc.
 
 Each of these types must be handled differently.
 
@@ -71,6 +96,8 @@ Each of these types must be handled differently.
 `+cg/group Attributes1=Strength|Dexterity|Stamina`
 
 `+cg/group Attributes2=Presence|Manipulation|Composure`
+
+`+cg/pg Default`
 
 `+cg/points Attribute=7 5 3`
 
