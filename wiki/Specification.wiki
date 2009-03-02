@@ -97,6 +97,8 @@ Each of these types must be handled differently.
 
 `+cg/points Default/Attribute=7 5 3`
 
+*THIS IS NO LONGER ACCURATE.* I've made some changes in the code and don't have time to set them up here. Will get to it later.
+
 ...etc.
 
 We _will_ call these groups "Attributes1", "Attributes2", "Attributes3", "Skills1", "Skills2", and "Skills3". I know there are fancier names for these groups in the various WoD setups; these are keywords for my chargen only to make it as cross-compatible as possible. We're going with "Skills" instead of "Abilities" because in theory more people will want this for NWoD than old as there are actually new _books_ for NWoD. (Also, "Skills" is shorter.) This does NOT affect the sheet or anything like it - it's just how things will be grouped for the code's purposes. We're allowing plurals in this one instance because they make sense. This is a bit of a nasty hardcode hack, but since there are only two places it needs done, it beats the alternative: coding an entire grouping system for two sets of stats. Ugh.
