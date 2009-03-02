@@ -3,7 +3,7 @@
 
 == STATS ==
 
-Stats are expressed like so: `Stat Type:Stat Name:Value`
+Stats are expressed like so: `Stat Type:Stat Name:Value:Details`
 
 To properly explain these, we're going to have to dissect the various parts of a stat.
 
@@ -15,6 +15,8 @@ To properly explain these, we're going to have to dissect the various parts of a
     # A number (#) which is between 1 and 10, and may be treated as a pool, with temporary raises and losses. NO NWoD stat may go above 10. Most won't ever exceed 5. However, that's for the code you build off of this character generator to worry about - in the stat DB, numerical stats will be stored as "`#`". That implies that 0/10 is a correct value, as is 6, as is 0, as is 3. If you write code to raise or lower someone's stats according to game rules, make sure you account for the game rules within that code - the chargen will NOT prevent them from raising or rolling a stat at 10.
     # A word or phrase (`*`) which may have any of the following characters: `A-Z`, `0-9`, `!`, `@`, `$`, `^`, ```, `'`, `"`, `,`, `.`, `?`, `space`, and `_`. There are some characters missing. The reason for this? We are going to use them as separators, _or_ they are capable of causing the chargen's sheet to barf. See [#Restricted_Characters] and [#Reserved_Characters] for details. Everything else is whitelisted. If you want to add to that list of permissible characters, there's a setting for it - but think very carefully before you do and make sure that the character in question won't cause your game harm. (European characters should be all right - I just can't be arsed to add them myself and they might not work on some games, so I'm leaving them out for now.)
     # A list of permissible text values, such as "`Daeva|Gangrel|Mekhet|Nosferatu|Ventrue`". You could stick a `#` or a `*` in there, though I'm not sure why you'd need to. You cannot, however, make a list like so: `Peter|Piper|Picked|A|Peck|Of|Pickled|Peppers (Or|Maybe|Something|Else|From|This|List)|And|So|On`. The internal pipes would get confused, sorry. Since I can't think of a use for that trick, I'm not going to code a way around it.
+
+  * _Stat Details_: Anything special staff or the player wants to note about this stat. Should be reasonably simple. We should be able to allow a slightly more diverse range of characters in this field since it will always be interpreted as straight text.
 
 Each stat is stored on its own attribute. Attribute name doesn't matter except that it begins with `_stat-`. Do NOT let your players add attributes that start with `_stat-`! They will be able to roll and prove them. Fortunately, attributes starting with `_` are wizard-only on most games. That is assumed to be true here. If this assumption is incorrect, better edit your .conf file to protect those attributes, or there will be problems when players find that they can set their abilities to insane levels without spending XP.
 
@@ -44,19 +46,19 @@ We WILL have a standardized validation format to compare stats. This is going to
 
   `Personal:Group = Police`
 
-  `Setting:_TEMPLATE = Feature Character`
+  `Setting:_SPECIALCHARACTER = 1`
 
 == POINTS ==
 
-Points come in groups. A group covers all the points for all the stats available to the individual for whatever point group they're set to use. A group can be restricted - you must be a vampire to have X point group, for example.
+Points come in groups called tiers. A tier covers all the points for all the stats available to the individual for whatever tier they're set to use. A tier can be restricted - you must be a vampire to have X tier, for example.
 
-There is a Default pointgroup which MUST be set up in order for this chargen to work.
+There is a Default tier which MUST be set up in order for this chargen to work.
 
-A group may have multiple point values set for it. It is assumed to use the values set in the Default pointgroup unless they're overridden. A value of 0 (the default) means the player does not have access to that stat or stat type. You can override a default value with 0 if you want a player to have no access to the default.
+A tier may have multiple point values set for it. It is assumed to use the values set in the Default tier unless they're overridden. A value of 0 (the default) means the player does not have access to that stat or stat type. You can override a default value with 0 if you want a player to have no access to the default.
 
-Points apply to numerical stats only. If a stat does not have a point value anywhere, even in the default set, it is assumed to have a point max of 0, and thus be un-buyable at chargen.
+Points apply to numerical stats only. If a stat does not have a point value anywhere, even in the default tier, it is assumed to have a point max of 0, and thus be un-buyable at chargen.
 
-Point groups might consist of:
+Tiers might (for example) consist of:
 
   * Default (everyone has these base points at chargen)
   * Mortal (slightly lower points for mortals)
@@ -65,13 +67,13 @@ Point groups might consist of:
 
 Syntax will be something like:
 
-`+cg/pg Default` - Set the current point group for editing and create it if it doesn't exist.
+`+cg/tier Default` - Create a new tier
 
-`+cg/points Merit=7`
+`+cg/points Default/Merit=7`
 
-`+cg/points Humanity=2`
+`+cg/points Default/Humanity=2`
 
-Note that these are distinct from templates, which are predefined groups of points which may not fit within the range of points for your selected group.
+*Note*: tiers are distinct from templates, which are predefined groups of points which may not fit within the tier the PC has selected and thus might cause errors.
 
 *Goal*: Do NOT force players to choose a point group explicitly unless they're doing something _special_. Try to guess what point group they're going for and grade them accordingly.
 
@@ -91,9 +93,9 @@ Each of these types must be handled differently.
 
 `+cg/group Attributes2=Presence|Manipulation|Composure`
 
-`+cg/pg Default`
+`+cg/tier Default`
 
-`+cg/points Attribute=7 5 3`
+`+cg/points Default/Attribute=7 5 3`
 
 ...etc.
 
@@ -126,13 +128,11 @@ There are two special types of formula: Greatest and Least. They'll take a pipe-
 
 If, for some reason, you allow players to buy a calculated stat up, the _minimum_ value of that stat will be the calculated result, the maximum will be whatever you set (or the default of 10), and the total value will be the purchased points plus the calculated value.
 
-*Points drawn from other pools*: This gets _speshul_. And irritating. When you can buy your Blood Potency up with 3 Merit points, figuring out how many points the user has spent is irksome. We'll deal with that by creating point pools and setting the cost of buying certain stats in them. So:
+*Points drawn from other pools*: This gets _speshul_. And irritating. When you can buy your Blood Potency up with 3 Merit points, figuring out how many points the user has spent is irksome. We'll deal with that by allowing costs to specify alternate pools, and by creating two default pools, XP and Freebies:
 
-`+cg/cost Points:Merit/Blood Potency=3`
+`+cg/cost Blood Potency=Points:Merit:3`
 
-`+cg/pool XP`
-
-`+cg/cost XP/Attribute=CurrentValue * 5`
+`+cg/cost XP/Blood Potency=CurrentValue * 5`
 
 Or, for you OWoD fans:
 
@@ -156,7 +156,7 @@ One more for the road, and this is one of those absolutely annoying features of 
 
 `+cg/new Hollow:Doors=#`
 
-`+cg/points Hollow=Merit:Hollow` - set the number of points used for the Hollow group of stats to the number of points the player currently has in Hollow.
+`+cg/points Default/Hollow=Merit:Hollow` - set the number of points used for the Hollow group of stats to the number of points the player currently has in Hollow.
 
 `+cg/max Hollow=Merit:Hollow` - Don't let them go any higher than their current rating.
 
@@ -252,6 +252,12 @@ There. Substats. That was nowhere near as disgusting as I thought it was going t
 `+cg/max <Stat Type or Name>=<Value>`
 
 `+cg/default <Stat Type or Name>=<Value>` - the default will not be charged CG Points for.
+
+`+cg/formula <Stat Name>=<Formula>`
+
+`+cg/cost [<Pool Name>/]<Stat Type or Name>=<Formula>`
+
+`+cg/initialcost [<Pool Name>/]<Stat Type or Name>=<Formula>`
 
 `+cg/note <Stat Name>=[<Notes>]` (enter nothing to remove)
 
