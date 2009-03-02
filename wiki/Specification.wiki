@@ -3,11 +3,7 @@
 
 == STATS ==
 
-There are two types of stat in NWoD: simple and compound. A simple stat is a stat which has but one value, whether it's text or numerical. A compound stat is a simple stat - with the ability to attach additional stats to it.
-
-_Simple stats_ are expressed like so: `Stat Type:Stat Name:Value`
-
-_Compound stats_ are expressed like so: `Stat Type:Stat Name:Value:List of simple stat attributes separated by ~tildes`
+Stats are expressed like so: `Stat Type:Stat Name:Value`
 
 To properly explain these, we're going to have to dissect the various parts of a stat.
 
@@ -19,8 +15,6 @@ To properly explain these, we're going to have to dissect the various parts of a
     # A number (#) which is between 1 and 10, and may be treated as a pool, with temporary raises and losses. NO NWoD stat may go above 10. Most won't ever exceed 5. However, that's for the code you build off of this character generator to worry about - in the stat DB, numerical stats will be stored as "`#`". That implies that 0/10 is a correct value, as is 6, as is 0, as is 3. If you write code to raise or lower someone's stats according to game rules, make sure you account for the game rules within that code - the chargen will NOT prevent them from raising or rolling a stat at 10.
     # A word or phrase (`*`) which may have any of the following characters: `A-Z`, `0-9`, `!`, `@`, `$`, `^`, ```, `'`, `"`, `,`, `.`, `?`, `space`, and `_`. There are some characters missing. The reason for this? We are going to use them as separators, _or_ they are capable of causing the chargen's sheet to barf. See [#Restricted_Characters] and [#Reserved_Characters] for details. Everything else is whitelisted. If you want to add to that list of permissible characters, there's a setting for it - but think very carefully before you do and make sure that the character in question won't cause your game harm. (European characters should be all right - I just can't be arsed to add them myself and they might not work on some games, so I'm leaving them out for now.)
     # A list of permissible text values, such as "`Daeva|Gangrel|Mekhet|Nosferatu|Ventrue`". You could stick a `#` or a `*` in there, though I'm not sure why you'd need to. You cannot, however, make a list like so: `Peter|Piper|Picked|A|Peck|Of|Pickled|Peppers (Or|Maybe|Something|Else|From|This|List)|And|So|On`. The internal pipes would get confused, sorry. Since I can't think of a use for that trick, I'm not going to code a way around it.
-
-And finally, that list of stat attributes separated by tildes (`~`): these are the names of stats
 
 Each stat is stored on its own attribute. Attribute name doesn't matter except that it begins with `_stat-`. Do NOT let your players add attributes that start with `_stat-`! They will be able to roll and prove them. Fortunately, attributes starting with `_` are wizard-only on most games. That is assumed to be true here. If this assumption is incorrect, better edit your .conf file to protect those attributes, or there will be problems when players find that they can set their abilities to insane levels without spending XP.
 
@@ -148,6 +142,8 @@ Or, for you OWoD fans:
 
 Costs are considered to apply across all tiers. CG points are always 1:1.
 
+To start drawing points from another point pool (freebies, XP) you need to finish with one pool, cement your points, spent or unspent. Going back will be a pain in the ass. I'll have to figure out a syntax for this.
+
 One more for the road, and this is one of those absolutely annoying features of White Wolf Games: Substats. Let's see here.
 
 `+cg/new Merit:Hollow (*)=#`
@@ -184,21 +180,14 @@ There. Substats. That was nowhere near as disgusting as I thought it was going t
 
 `+cg <Stat Name or Type>` - Check whether or not you meet a stat's prerequisites, if any. *Coded (equivalent to `+ref <Stat Name or Type>`)*
 
-`+cg <Stat Name>/<Detail>` - Check whether or not you meet a stat detail's prerequisites, if any. *Coded (equivalent to `+ref <Stat Name>/<Detail>`)*
-
 `+cg <Stat Name>=<Value>`
   * +cg Brawl=5
   * +cg Language (German)=1
   * +cg Hollow (Personal)=5
 
-`+cg <Stat Name>/<Detail>=<Value>`
-  * +cg Hollow/Wards=2
-  * +cg Brawl/Specialty=Right Hook
-  * +cg Humanity/Megalomania=5
+`+cg Template=<Template>` - Special version. Applies a template. Will ask if you're sure first. (Template here means "group of pre-defined points which can be applied to your sheet.")
 
-`+cg Template=<Template>` - Special version. Applies a template. Will ask if you're sure first.
-
-`+cg Tier=<Tier>` - Special version. Checks your points based on a different tier than the one you're listed in by default.
+`+cg Tier=<Tier>` - Special version. Checks your points based on a different tier than the one you're listed in by default. (Tier means "point group".)
 
 `+cg/check` - Check you for everything that needs to be set before you can be approved.
 
@@ -220,17 +209,11 @@ There. Substats. That was nowhere near as disgusting as I thought it was going t
 
 `+ref <Stat Name>` - List all details in that stat, plus formats available, plus values available, plus any checks that will be run on this stat. *Coded.*
 
-`+ref <Stat Name>/<Detail>` - List all details on this detail, plus formats available, plus values available, plus any checks that will be run on this stat. *Coded.*
-
 `+xp` - List how much XP you have, plus handy spending commands (if in XP-spending-safe area).
 
 `+xp/check <Stat Name>` - Lists how much it would cost to buy the next level of that stat, and whether you meet the prerequisites.
 
-`+xp/check <Stat Name>/<Detail>` - As above, but for sub-stats.
-
 `+xp/buy <Stat Name>` - Spend XP on a stat.
-
-`+xp/buy <Stat Name>/<Detail>` - As above, but for sub-stats.
 
 == STAFF COMMANDS ==
 
@@ -246,45 +229,29 @@ There. Substats. That was nowhere near as disgusting as I thought it was going t
 
 `+cg/new <Stat Type>:<Stat Name>=<Value>` *Coded.*
 
-`+cg/new <Stat Name>/<Stat Type>:<Detail>=<Value>` *Coded.*
-
 `+cg/group [Attributes1, Attributes2, Attributes3, Skills1, Skills2, or Skills3]=<List of stat names>` - Manage the six default point groups. *Coded.*
 
-`+cg/tier <New or Old Tier Name>=<Restrictions>` - Tiers are point groups.
+`+cg/tier <Tier Name>` - Create a new tier.
 
-`+cg/tier <Tier Name>/<Stat Type or Name>=<Points>`
+`+cg/tier <Tier Name>/<Stat Type or Name, or pool name>=<Points>`
 
 `+cg/tier/nuke <Tier Name>`
 
-`+cg/template <New Template Name>=<Tier Name>` - Templates are predefined stats.
+`+cg/template <New Template Name>` - Templates are predefined stats.
 
 `+cg/template <Template Name>/<Stat Name>=<Value>`
 
 `+cg/template/nuke <Template Name>`
 
-`+cg/restrict <Stat Name>=<Restrictions>` (Does not compound)
+`+cg/restrict <Stat Name, Type, or Tier>=<Restrictions>` (Does not compound)
 
 `+cg/unrestrict <Stat Name>`
 
-`+cg/restrict <Stat Name>/<Detail>=<Restrictions>`
+`+cg/min <Stat Type or Name>=<Value>`
 
-`+cg/unrestrict <Stat Name>/<Detail>`
+`+cg/max <Stat Type or Name>=<Value>`
 
-`+cg/min <Stat Type>=<Value>`
-
-`+cg/min <Stat Name>=<Value>`
-
-`+cg/max <Stat Type>=<Value>`
-
-`+cg/max <Stat Name>=<Value>`
-
-`+cg/default <Stat Type>=<Value>` - the default will not be charged CG Points for.
-
-`+cg/default <Stat Name>=<Value>`
-
-`+cg/points <Stat Type>=<Value>` - number of points players have to spend on that type by default.
-
-`+cg/points <Stat Name>=<Value>`
+`+cg/default <Stat Type or Name>=<Value>` - the default will not be charged CG Points for.
 
 `+cg/note <Stat Name>=[<Notes>]` (enter nothing to remove)
 
@@ -294,23 +261,13 @@ There. Substats. That was nowhere near as disgusting as I thought it was going t
 
 `+cg/nuke <Stat Type>:<Stat Name>`
 
-`+cg/nuke <Stat Name>/<Detail Type>:<Detail>`
-
 The following functions may not be coded, since they would require, in theory, that we parse the playerbase and edit their stats. We're including them here as a possible stage 2 feature.
 
-`+cg/name <Stat Type>=<New Type Name>`
-
-`+cg/name <Stat Name>=<New Stat Name>`
-
-`+cg/name <Stat Name>/<Detail>=<New Detail Name>`
+`+cg/name <Stat Type or Name>=<New Stat Type Name or Stat Name>`
 
 `+cg/type <Stat Name>=<New Stat Type>`
 
-`+cg/type <Stat Name>/<Detail>=<New Detail Type>`
-
 `+cg/value <Stat Name>=<New Value>`
-
-`+cg/value <Stat Name>/<Detail>=<New Detail Value>`
 
 == Reserved Words ==
 
@@ -323,6 +280,7 @@ The following functions may not be coded, since they would require, in theory, t
   * CurrentValue
   * NewValue
   * Points
+  * Default
   * Attributes1
   * Attributes2
   * Attributes3
