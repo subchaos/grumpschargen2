@@ -210,6 +210,33 @@ There are only two types of pool: `Experience` and `Freebies`. These are explici
 }}}
 `*` Does exactly the same thing as the item above it. Just an example of explicit type declaration.
 
+==== Group ====
+
+Groups come in two types: _Point Groups_ and _Stat Groups_. Stat groups are groups of stats. Point groups are stat groups grouped together for point-spreading purposes.
+
+*Staff Commands*
+{{{
++cg/statgroup <New Stat Group>
++cg/statgroup <Stat Group>=<List of Stats Separated by Pipes (|)>
++cg/statgroup/nuke <Stat Group>
+
++cg/pointgroup <New Point Group>
++cg/pointgroup <Point Group>=<List of Stat Groups Separated by Pipes (|)>
++cg/pointgroup/nuke <Point Group>
+}}}
+
+*Sample Stat Groups*
+  * Physical Attributes
+  * Social Skills
+  * Talents
+  * Skills
+  * Knowledges
+
+*Sample Point Groups*
+  * Attributes
+  * Skills
+  * Abilities
+
 
 
 
