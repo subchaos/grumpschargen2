@@ -5,15 +5,7 @@
 
 The stat database is an extremely specialized miniature relational database. It's a pain in the ass to describe in standard database terms (and most of the people reading this wouldn't be interested anyway) so I'm going to group them and then take each group in detail.
 
-These are the groups of data stored in this thing:
-
-  * [#Stats]
-  * [#Points]
-  * [#Templates]
-
-And finally, a special section dedicated solely to the "language" this chargen uses to describe stats:
-
-  * [#Formulas]
+<wiki:toc max_depth="3" />
 
 == Stats ==
 
