@@ -195,6 +195,21 @@ These may be explicitly declared by placing one of the following keywords, follo
 
 If you don't include one of these, the system will cheerfully attempt to guess in the order they're listed above.
 
+==== Pools ====
+
+There are only two types of pool: `Experience` and `Freebies`. These are explicitly declared in the code. We do NOT have a pool management system. You may set the number of points in these pools, but there is no other administration for them.
+
+*Sample Staff Commands*
+{{{
++cg/points Default/Experience=0
++cg/points Default/Pool:Experience=0*
++cg/points Advanced/Experience=35
++cg/points Heroic/Experience=100
++cg/points Default/Freebies=15
++cg/points Mortal/Freebies=21
+}}}
+`*` Does exactly the same thing as the item above it. Just an example of explicit type declaration.
+
 
 
 
