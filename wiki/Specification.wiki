@@ -268,13 +268,15 @@ Most of this was discussed in the [#Point_Types] section. For storage purposes, 
 Values may be:
   * A number.
   * For a point group, a list of numbers.
-  * A [#Formula].
+  * A formula.
 
 Numbers may be any number greater than or equal to zero.
 
 If the target is a point group, you must have exactly the same number of points as you have stat groups in your point group. These must be numbers greater than or equal to zero.
 
-More on formulas later.
+More on [#Formulas] later.
+
+----
 
 == Templates ==
 
@@ -291,11 +293,79 @@ A template is a group of predefined stats which allow players to set their chara
 {{{
 +cg/template <New Template>
 +cg/template/nuke <Template>
-+cg/template <Template>/<Stat>=<Value>*
++cg <Template>/<Stat>=<Value>*
 }}}
 `*` This command works *just* like the player `+cg <Stat>=<Value>` command. To clear a value from a template, enter nothing for the value.
 
+----
+
 == Formulas ==
+
+Formulas are used in:
+
+  * Restrictions
+  * Values
+
+The commands which can accept formula values are:
+{{{
++cg/points <Tier>/<Stat>=<Value>
++cg/min <Tier>/<Stat>=<Value>
++cg/max <Tier>/<Stat>=<Value>
++cg/default <Stat>=<Value>
++cg/restrict <Target>=<Value>
+}}}
+
+=== Syntax ===
+
+An expression will be split up based on the following symbols:
+
+  * `(` and `)` - Group an expression
+  * `+` - Add
+  * `-` - Subtract
+  * `>` - Greater Than
+  * `<` - Less Than
+  * `=` - Equal To
+  * `/` - Divide
+  * `|` - Or
+  * `&` - And
+
+From there, each string will be taken and evaluated separately. Strings may have the following special identifiers:
+
+  * `Greatest:<Tilde-separated list of stats>`
+  * `Least:<Tilde-separated list of stats>`
+  * `If:<Stat>:<Compare>:<True Value>[:<False Value>]`
+
+If one of these identifiers is not found, the string will be treated as a stat. You may wish to explicitly declare the stat's type to keep it from being confused with other stats with similar names. If you wish to do so, the syntax is:
+
+  * `Type:Stat` - for example, `Attribute:Strength`
+
+Note that expressions deal in both temporary and permanent values and may evaluate differently for each if a player's temporary stats are drastically different from his permanent stats. You cannot explicitly specify a temporary or permanent value of a stat.
+
+==== Greatest ====
+
+This would take the highest numerical stat in the list and return its value.
+
+Example: `Greatest:Strength~Dexterity~Stamina`
+
+The above example would return the highest of the player's Strength, Dexterity, or Stamina.
+
+==== Least ====
+
+This will take the lowest numerical stat in the list and return its value.
+
+Example: `Least:Dexterity~Wits`
+
+The above example would return the least of the player's Dexterity or Wits.
+
+==== If ====
+
+This compares a stat to an expected value, and returns one value if true, and another if false. The false value is not necessary and will automatically evaluate to zero if not set.
+
+Example: `If:Kith:Runnerswift:2`
+
+If the player's kith is set to "Runnerswift" then return 2. Otherwise, return 0.
+
+
 
 
 
@@ -590,7 +660,7 @@ These characters will be interpreted specially by the chargen. If they are inclu
 
 Note that this is actually done in the code with a _whitelist_. Whitelisted characters are permitted. Anything not on the list is denied.
 
-  * `*` - Wildcard any text
+  * `*` - Wildcard any text, multiply
   * `#` - Wildcard any number between 0 and 10
   * `(` and `)` - Group an expression
   * `+` - Add
@@ -598,7 +668,7 @@ Note that this is actually done in the code with a _whitelist_. Whitelisted char
   * `>` - Greater Than
   * `<` - Less Than
   * `=` - Equal To, also a separator in commands
-  * `/` - Separator in commands
+  * `/` - Divide, also a separator in commands
   * `~` - Database separator
   * `:` - Database separator, also a separator in commands
   * `|` - Or, also a database separator, also a separator in commands
