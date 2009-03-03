@@ -301,6 +301,10 @@ A template is a group of predefined stats which allow players to set their chara
 
 == Formulas ==
 
+Formulas allow stat values, restrictions, and point allocations to change based on the players' other stats. Formulas are stored on the stat databases in the "Value" field for whatever they're determining. They are also stored on the player object for ease of lookup.
+
+Note that stats which have "formula" values *cannot* be bought up with XP or in chargen. You may, however, create other stats which can be bought up and will raise the value of the formulaic stat.
+
 Formulas are used in:
 
   * Restrictions
@@ -308,11 +312,11 @@ Formulas are used in:
 
 The commands which can accept formula values are:
 {{{
-+cg/points <Tier>/<Stat>=<Value>
-+cg/min <Tier>/<Stat>=<Value>
-+cg/max <Tier>/<Stat>=<Value>
-+cg/default <Stat>=<Value>
-+cg/restrict <Target>=<Value>
++cg/points <Tier>/<Stat>=<Formula>
++cg/min <Tier>/<Stat>=<Formula>
++cg/max <Tier>/<Stat>=<Formula>
++cg/default <Stat>=<Formula>
++cg/restrict <Target>=<Formula>
 }}}
 
 === Syntax ===
@@ -336,6 +340,8 @@ From there, each string will be taken and evaluated separately. Strings may have
   * `If:<Stat>~<Compare>~<True Value>[~<False Value>]`
   * `Setting:<&Setting>`
   * `Flag:<System Flag>`
+  * `Points:<Target>`
+  * `CurrentValue`
 
 If one of these identifiers is not found, the string will be treated as a stat. You may wish to explicitly declare the stat's type to keep it from being confused with other stats with similar names. If you wish to do so, the syntax is:
 
@@ -403,122 +409,63 @@ Value Example: `If:Flag:LISTENING~1~3:1`
 
 If the player has the "LISTENING" flag (it evaluates to 1), then return 3. Otherwise, return 1.
 
+==== Chargen Points ====
+
+This allows you to draw points from other pools when charging people for basic chargen stuff. It is expressed like so: `Points:Type:Target:Value`.
+
+Example: `+cg/cost Blood Potency=Points:Type:Merit:3`
+
+This would make Blood Potency cost 3 merit points in chargen. (If the word `Type` is confusing, remember that it refers to "Stat Type".)
+
+==== CurrentValue ====
+
+This returns the current value of the stat. It is only usable in cost calculations because otherwise it would cause a great deal of messy recursion.
+
+Example: `+cg/cost XP/Attribute=If:CurrentValue < 4~1~(CurrentValue + 1) * 5~30`
+
+If the current value is 3 or lower, the cost in XP to raise an attribute is the current value plus one, multiplied by 5. If the current value is four, the cost to raise it is 30.
+
+
+
+
 === Examples ===
 
 *Restrictions:*
+
   * `Merit:Stunning Looks > 2 & Skill:Persuasion > 3` - You must have Stunning Looks of at least 3 and Persuasion of at least 4 to take this stat.
+
   * `(Attribute:Strength > 2 & Skill:Brawl > 2) | Attribute:Dexterity > 3` - You need either a Strength of at least 3 and a Brawl score of at least 3 OR a Dexterity of at least 4.
+
   * `Personal:Affiliation = Police` - You must have your "Affiliation" stat set to "Police" to access this stat.
 
 *Values:*
+
   * Speed: `Setting:_SIZE + Attribute:Strength + Attribute:Dexterity + Merit:Fleet of Foot + If:Kith~Runnerswift~Wyrd` - Speed is a calculated stat with a value of Size + Strength + Dexterity + the value of the Fleet of Foot merit +, if the PC is of the Runnerswift Kith, their Wyrd. (Random example, do not take as gospel.)
+
   * Defense: `Lowest:Dexterity~Wits` - Defense is the lowest of the PC's dexterity or wits stats.
+
+*Actual Use:*
+
+  * `+cg/points Default/Type:Hollow=Merit:Hollow` - The player has as many points to spend in the "Hollow" type of stat as they have in the "Hollow" Merit. This can be handy for some of that crazy sub-stat foo White Wolf tosses out frequently.
+
+  * `+cg/new Advanced:Willpower=Resolve + Composure + Advanced:Extra Willpower` - Create a new calculated stat named Willpower which depends on two attributes and an advanced stat named "Extra Willpower", which might be bought up by players permitted to do so.
+
+  * `+cg/cost Blood Potency=Points:Type:Merit:3` - This would make Blood Potency cost 3 merit points in chargen.
+
+  * `+cg/cost XP/Willpower=Willpower * 5` - Make the cost of going up a level in willpower the current value multiplied by five.
+
+  * `+cg/cost XP/Attribute=NewValue * 5
+
+
 
 
 
 = OLD DATA BELOW THIS LINE =
 ----
 
-
-
-We WILL have a standardized validation format to compare stats. This is going to be the trickiest part of all. We will need it for merits, and to determine whether a person has the correct race/group to have stat X. Right now, it is as follows:
-
-=== `CompareValue ComparisonOperator CompareValue` ===
-
 == POINTS ==
 
-Points come in groups called tiers. A tier covers all the points for all the stats available to the individual for whatever tier they're set to use. A tier can be restricted - you must be a vampire to have X tier, for example.
 
-There is a Default tier which MUST be set up in order for this chargen to work.
-
-A tier may have multiple point values set for it. It is assumed to use the values set in the Default tier unless they're overridden. A value of 0 (the default) means the player does not have access to that stat or stat type. You can override a default value with 0 if you want a player to have no access to the default.
-
-Points apply to numerical stats only. If a stat does not have a point value anywhere, even in the default tier, it is assumed to have a point max of 0, and thus be un-buyable at chargen.
-
-Tiers might (for example) consist of:
-
-  * Default (everyone has these base points at chargen)
-  * Mortal (slightly lower points for mortals)
-  * Vampire (slightly higher points for vampires)
-  * etc.
-
-Syntax will be something like:
-
-`+cg/tier Default` - Create a new tier
-
-`+cg/points Default/Merit=7`
-
-`+cg/points Default/Humanity=2`
-
-*Note*: tiers are distinct from templates, which are predefined groups of points which may not fit within the tier the PC has selected and thus might cause errors.
-
-*Goal*: Do NOT force players to choose a tier explicitly unless they're doing something _special_. Try to guess what tier they're going for and grade them accordingly.
-
-Points, in White Wolf games, come in several types.
-
-  * Grouped points: You get X, Y, and Z points to spread among groups A, B, and C
-  * Single-type points: You get X virtues, Y backgrounds, and Z merits
-  * Single-stat points: You get X points for humanity, etc.
-  * Calculated stats: Stat X = Stat Y + Stat Z, Stat X = Least of Stat Y or Stat Z
-  * Values that spend their points from alternate pools: Freebies, merit points, XP, etc.
-
-
-Each of these types must be handled differently.
-
-*Grouped Points*: These are a pain in the ass. Fortunately, there seem to be only two: Attributes and Abilities/Skills. Since there are only two, we'll include a few default checks that handle the two types of stats they apply to. We'll allow staff to change which skill/ability/attribute goes into which group, but we'll calculate the point totals of the groups in the same way every time. I expect we'll need something like the following command:
-
-`+cg/group Attributes1=Strength|Dexterity|Stamina`
-
-`+cg/group Attributes2=Presence|Manipulation|Composure`
-
-`+cg/tier Default`
-
-`+cg/points Default/Attribute=7 5 3`
-
-*THIS IS NO LONGER ACCURATE.* I've made some changes in the code and don't have time to set them up here. Will get to it later.
-
-...etc.
-
-We _will_ call these groups "Attributes1", "Attributes2", "Attributes3", "Skills1", "Skills2", and "Skills3". I know there are fancier names for these groups in the various WoD setups; these are keywords for my chargen only to make it as cross-compatible as possible. We're going with "Skills" instead of "Abilities" because in theory more people will want this for NWoD than old as there are actually new _books_ for NWoD. (Also, "Skills" is shorter.) This does NOT affect the sheet or anything like it - it's just how things will be grouped for the code's purposes. We're allowing plurals in this one instance because they make sense. This is a bit of a nasty hardcode hack, but since there are only two places it needs done, it beats the alternative: coding an entire grouping system for two sets of stats. Ugh.
-
-*Single Type Points*: Stats are already automatically grouped by type. It should be simple enough to type, say, `+cg/points Virtue=7` and make sure everyone has access to 7 points of virtues. It enforces a maximum - someone could still spend 2 of the seven points they have for virtues, and discard the rest. To enforce a minimum, `+cg/min Virtue=1` would be a good start. Then, if you don't want someone to pay points for the first point, `+cg/default Virtue=1` would make that first point free.
-
-*Single Stat Points*: `+cg/points Morality=7` - not much fancy here. This does NOT take into account calculated stats - if Humanity in your game is a calculated stat, look elsewhere.
-
-*Calculated Stats*: Special language is needed to describe calculated stats. First, you create the stat:
-
-`+cg/new Basic:Size=5`
-`+cg/new Pool:Speed=#`
-
-Then, you set the formula for the stat:
-
-`+cg/formula Speed=Basic:Size + Attribute:Strength + Attribute:Dexterity + Merit:Fleet of Foot + Kith:Runnerswift:2`
-
-Stats that don't produce a numerical value evaluate to 1 or 0, or to whatever the third value is, if there is one. The third value *must* evaluate to a number, though.
-
-The third value can also be a stat, say: `Pool:Wyrd`.
-
-It can even be a formula: `Greatest:Attribute:Strength|Attribute:Dexterity|Attribute:Stamina`
-
-There are two special types of formula: Greatest and Least. They'll take a pipe-separated list of stats and translate them into numbers, then take the highest of those numbers, or the lowest. This should give you a hint for, say, Defense:
-
-`+cg/new Pool:Defense=#`
-
-`+cg/formula Defense=Least:Attribute:Wits|Attribute:Dexterity`
-
-If, for some reason, you allow players to buy a calculated stat up, the _minimum_ value of that stat will be the calculated result, the maximum will be whatever you set (or the default of 10), and the total value will be the purchased points plus the calculated value.
-
-*Points drawn from other pools*: This gets _speshul_. And irritating. When you can buy your Blood Potency up with 3 Merit points, figuring out how many points the user has spent is irksome. We'll deal with that by allowing costs to specify alternate pools, and by creating two default pools, XP and Freebies:
-
-`+cg/cost Blood Potency=Points:Merit:3`
-
-`+cg/cost XP/Blood Potency=CurrentValue * 5`
-
-Or, for you OWoD fans:
-
-`+cg/cost XP/Ability=NewValue * 2`
-
-`+cg/initialcost XP/Ability=3`
 
 Costs are considered to apply across all tiers. CG points are always 1:1.
 
