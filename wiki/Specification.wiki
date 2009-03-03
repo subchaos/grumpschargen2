@@ -367,11 +367,15 @@ The above example would return the least of the player's Dexterity or Wits.
 
 ==== If ====
 
-This compares a stat to an expected value, and returns one value if true, and another if false. The false value is not necessary and will automatically evaluate to zero if not set.
+This compares a stat to an expected value, and returns one value if true, and another if false. The false value is not necessary and will automatically evaluate to zero if not set. You can have multiple comparisons; the last option will be the "false" if nothing in the list is matched.
 
 Example: `If:Kith~Runnerswift~2`
 
 If the player's kith is set to "Runnerswift" then return 2. Otherwise, return 0.
+
+Example: `If:Affiliation~Police~3~Hospital~2~1`
+
+If the player's affiliation is set to "Police", return 3; if it's set to "Hospital", return 2; if it's set to anything else or doesn't exist, return 1.
 
 ==== Setting ====
 
@@ -421,9 +425,9 @@ This would make Blood Potency cost 3 merit points in chargen. (If the word `Type
 
 This returns the current value of the stat. It is only usable in cost calculations because otherwise it would cause a great deal of messy recursion.
 
-Example: `+cg/cost XP/Attribute=If:CurrentValue < 4~1~(CurrentValue + 1) * 5~30`
+Example: `+cg/cost XP/Attribute=If:CurrentValue < 4 | CurrentValue > 5~1~(CurrentValue + 1) * 5~30`
 
-If the current value is 3 or lower, the cost in XP to raise an attribute is the current value plus one, multiplied by 5. If the current value is four, the cost to raise it is 30.
+If the current value is 3 or lower, or greater than 5, the cost in XP to raise an attribute is the current value plus one, multiplied by 5. If the current value is four, the cost to raise it is 30.
 
 
 
@@ -454,7 +458,9 @@ If the current value is 3 or lower, the cost in XP to raise an attribute is the 
 
   * `+cg/cost XP/Willpower=Willpower * 5` - Make the cost of going up a level in willpower the current value multiplied by five.
 
-  * `+cg/cost XP/Attribute=NewValue * 5
+  * `+cg/cost XP/Attribute=If:CurrentValue < 4 | CurrentValue > 5~1~(CurrentValue + 1) * 5~30` - If the current value is 3 or lower, or greater than 5, the cost in XP to raise an attribute is the current value plus one, multiplied by 5. If the current value is four, the cost to raise it is 30.
+
+  * `+cg/cost XP/Background=CurrentValue` - You have to pay the current value of the background you're raising in XP in order to raise it by one.
 
 
 
