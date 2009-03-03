@@ -101,6 +101,8 @@ Stat values may have the following special formats:
   * List of valid options: `Option A|Option B|Option C|etc...`
     * Gender: Male, Female, or Transvestite
     * Race: Mortal, Vampire, Changeling, Werewolf or Mage
+  * [#Formulas]
+    * Speed: `Basic:Size + Attribute:Strength + Attribute:Dexterity + Merit:Fleet of Foot + Kith:Runnerswift:2`
 
 
 All numerical stats may have a temporary value and a permanent value. These are stored on the PC as Temp/Perm. For example: `&_stat-# PC=Attribute:Strength:1/5`
@@ -108,6 +110,8 @@ All numerical stats may have a temporary value and a permanent value. These are 
 Non-numerical stat values may not be rolled.
 
 Non-numerical stats are restricted in what characters they may contain. For details, see [#Restricted_Characters] and [#Reserved_Characters]. A good rule of thumb is that restricted characters may not be used in a stat value or name at all, ever, while reserved characters may be used in names and values by staff.
+
+[#Formulas] will be dealt with in more detail later.
 
 === Details ===
 
