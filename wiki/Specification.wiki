@@ -11,6 +11,10 @@ These are the groups of data stored in this thing:
   * [#Points]
   * [#Templates]
 
+And finally, a special section dedicated solely to the "language" this chargen uses to describe stats:
+
+  * [#Formulas]
+
 == Stats ==
 
 *Player Commands*
@@ -255,6 +259,43 @@ Group declaration is solely for the purpose of handling that annoying "point spr
 
 An explicit stat name. This is the broadest group and most prone to mistakes. Remember to use the actual, original text of the stat name: `Language (*)` as opposed to `Language (German)` if you have multiple `Language` stats which might confuse things. See [#Stat_Names] for details.
 
+=== Point Targets ===
+
+Most of this was discussed in the [#Point_Types] section. For storage purposes, target will be as explicit as possible.
+
+=== Point Values ===
+
+Values may be:
+  * A number.
+  * For a point group, a list of numbers.
+  * A [#Formula].
+
+Numbers may be any number greater than or equal to zero.
+
+If the target is a point group, you must have exactly the same number of points as you have stat groups in your point group. These must be numbers greater than or equal to zero.
+
+More on formulas later.
+
+== Templates ==
+
+A template is a group of predefined stats which allow players to set their characters up quickly. Templates have *nothing* to do with Tiers or points, and may cause point errors when applied.
+
+*Player Commands*
+{{{
++cg Template=<Template>*
++ref <Template>
+}}}
+`*` Will ask if you're sure before applying.
+
+*Staff Commands*
+{{{
++cg/template <New Template>
++cg/template/nuke <Template>
++cg/template <Template>/<Stat>=<Value>*
+}}}
+`*` This command works *just* like the player `+cg <Stat>=<Value>` command. To clear a value from a template, enter nothing for the value.
+
+== Formulas ==
 
 
 
