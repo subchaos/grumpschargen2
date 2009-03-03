@@ -580,6 +580,7 @@ The following functions may not be coded, since they would require, in theory, t
   * Flag
   * Greatest
   * Least
+  * If
   * CurrentValue
   * Points
   * Default
@@ -587,12 +588,6 @@ The following functions may not be coded, since they would require, in theory, t
   * Group
   * Type
   * Stat
-  * Attributes1
-  * Attributes2
-  * Attributes3
-  * Skills1
-  * Skills2
-  * Skills3
 
 ----
 
