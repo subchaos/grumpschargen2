@@ -237,6 +237,16 @@ Groups come in two types: _Point Groups_ and _Stat Groups_. Stat groups are grou
   * Skills
   * Abilities
 
+Group declaration is solely for the purpose of handling that annoying "point spread" WoD mechanic. As such, it accepts only a list of numbers for its value.
+
+*Sample Staff Commands*
+{{{
++cg/points Default/Attributes=7 5 3
++cg/points Default/Group:Skills=13 9 5
++cg/points Mortal/Attributes=6 4 3
++cg/points Mortal/Skills=11 7 4
+}}}
+
 
 
 
