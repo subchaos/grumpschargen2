@@ -568,6 +568,8 @@ The following functions may not be coded, since they would require, in theory, t
 
 `+cg/value <Stat Name>=<New Value>`
 
+----
+
 == Reserved Words ==
 
   * Tier
@@ -577,7 +579,6 @@ The following functions may not be coded, since they would require, in theory, t
   * Greatest
   * Least
   * CurrentValue
-  * NewValue
   * Points
   * Default
   * Pool
@@ -590,6 +591,8 @@ The following functions may not be coded, since they would require, in theory, t
   * Skills1
   * Skills2
   * Skills3
+
+----
 
 == Reserved Characters ==
 
@@ -610,6 +613,8 @@ Note that this is actually done in the code with a _whitelist_. Whitelisted char
   * `:` - Database separator, also a separator in commands
   * `|` - Or, also a database separator, also a separator in commands
   * `&` - And
+
+----
 
 == Restricted Characters ==
 
