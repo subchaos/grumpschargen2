@@ -1,1 +1,136 @@
+#summary Code specification
 #labels Featured,Phase-Design
+
+== Summary ==
+
+The stat database is an extremely specialized miniature relational database. It's a pain in the ass to describe in standard database terms (and most of the people reading this wouldn't be interested anyway) so I'm going to group them and then take each group in detail. These are the groups of data stored in this thing:
+
+  * Stats
+  * Points
+  * Templates
+
+== STATS ==
+
+*Player Commands*
+{{{
++cg <Stat>=<Value>
++ref <Stat>
++cg/check
++cg/check <Stat>
++cg/wipe
++cg/wipe <Stat>
+}}}
+
+Every stat has the following parts:
+
+  * Type
+  * Name
+  * Value
+  * Details
+
+Each stat is stored like so:
+
+Stat Database: `&stat-# SDB=Type:Name:Value:Details`
+
+Player Object: `&_stat-# PC=Type:Name:Value:Details`
+
+=== Types ===
+
+*Staff Commands*
+
+{{{
++cg/new <Type>
++cg/nuke <Type>
++cg/type <Stat>=<New Type>*
+}}}
+`*` May not be implemented since it requires changing every PC object on the grid.
+
+*Sample Types*
+  * Attribute
+  * Merit
+  * Discipline
+
+Types are stored by name in the attribute `&stat_types` on the stat database and are referenced by name (rather than by number) on the PC and stat databases for ease of lookup. There are several "reserved" pseudo-types which act as keywords to tell the system to treat the data which follows differently. For the most part, you shouldn't have to worry about these; if you try to create a type which happens to have a reserved name, you'll be prevented from doing so. See [#Reserved_Words] for a list.
+
+=== Name ===
+
+*Staff Commands*
+{{{
++cg/new <Type>:<Name>=<Value>
++cg/nuke <Type>:<Name>
++cg/name <Stat>=<New Name>*
+}}}
+`*` May not be implemented since it requires changing every PC object on the grid.
+
+Stat names may have the following special formats:
+  * Literals: `Name`
+    * Brawl
+    * Melee
+    * Strength
+  * Wildcards: `Name (*)`
+    * Language (Sign Language)
+    * Hollow (Motley)
+    * Hollow (Personal)
+  * Lists: `Name (Option A|Option B|Option C)`
+    * Status (Police)
+    * Status (Fire Department)
+    * Status (Vampire)
+
+Names are stored on the stat database as the list, wildcard, or literal, as in `Language (*)`; on the player, they are stored as the actual, player-visible name: `Language (German)`.
+
+=== Values ===
+
+*Staff Commands*
+{{{
++cg/new <Type>:<Name>=<Value>
++cg/default <Stat>=<Value>
++cg/value <Stat>=<New Value>*
+}}}
+`*` May not be implemented since it requires checking and possibly changing every PC object on the grid.
+
+Stat values may have the following special formats:
+  * Numerals between 0 and 10: `#`
+  * Wildcards: `*`
+    * Full name: Sammy the Snake
+    * Occupation: Peanut butter maker
+  * List of valid options: `Option A|Option B|Option C|etc...`
+    * Gender: Male, Female, or Transvestite
+    * Race: Mortal, Vampire, Changeling, Werewolf or Mage
+  * [#Formulas]
+    * Speed: `Basic:Size + Attribute:Strength + Attribute:Dexterity + Merit:Fleet of Foot + Kith:Runnerswift:2`
+
+All numerical stats may have a temporary value and a permanent value. These are stored on the PC as Temp/Perm. For example: `&_stat-# PC=Attribute:Strength:1/5`
+
+Non-numerical stat values may not be rolled.
+
+Non-numerical stats are restricted in what characters they may contain. For details, see [#Restricted_Characters] and [#Reserved_Characters]. A good rule of thumb is that restricted characters may not be used in a stat value or name at all, ever, while reserved characters may be used in names and values by staff.
+
+[#Formulas] will be discussed in greater detail elsewhere.
+
+=== Details ===
+
+*Commands*
+
+{{{
++cg/note <Stat>=<Details>*
+}}}
+`*` When used by a staffer, this command sets the details of the stat in the database. When used by a player, it sets a note on the stat in case the player wants to justify it in some way.
+
+All stats can have details.
+
+Sample Details:
+  * On a PC's Strength: Set to 5 because my character is a world-class bodybuilder.
+  * On the Stat DB: Strength is the stat which tells you how strong your character is.%R%R%T0: Completely unable to move.%R%T1: 90-pound weakling.%R%T2: Average human being.%R%T3: Athlete.%R%T4: Champion wrestler.%R%T5: World-class Olympic bodybuilder.%R%T6: Superhuman.%R%T7: Werewolf.%R%T8: Ungodly.%R%T9: Impossible.%R%T10: Godlike.
+
+Details can contain nearly anything and can be as long as a single attribute will hold. (For Rhost, that's about 3900 characters, give or take; for MUX it's 7900.)
+
+== POINTS ==
+
+*Player Commands*
+{{{
++ref <Tier>
++cg Tier=<Tier>
++cg/check <Tier>
+}}}
+
+= This would be the point where I lost everything I was working on and really have no way to get it back. I hate wiki with a passion. =
