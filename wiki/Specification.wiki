@@ -1,6 +1,7 @@
 #summary Code specification
 #labels Featured,Phase-Design
-#sidebar TableOfContents
+
+<wiki:toc max_depth="4" />
 
 ----
 
