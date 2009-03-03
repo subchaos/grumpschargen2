@@ -170,8 +170,10 @@ All rules and restrictions are associated with a tier. These commands allow you 
 {{{
 +cg/min <Tier>/<Stat>=<Value>*
 +cg/max <Tier>/<Stat>=<Value>
++cg/restrict <Tier>/<Stat>=<Value>**
 }}}
 `*` Note that `<Stat>` in these cases and many others, refers to either a stat name or a type of stat. This way you can apply blanket values to all stats of a type.
+`**` Enter nothing to clear a restriction.
 
 
 = OLD DATA BELOW THIS LINE =
