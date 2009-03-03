@@ -7,11 +7,11 @@ The stat database is an extremely specialized miniature relational database. It'
 
 These are the groups of data stored in this thing:
 
-  * Stats
-  * Points
-  * Templates
+  * [#Stats]
+  * [#Points]
+  * [#Templates]
 
-== STATS ==
+== Stats ==
 
 *Player Commands*
 {{{
@@ -127,7 +127,9 @@ Sample Details:
 
 Details can contain nearly anything and can be as long as a single attribute will hold. (For Rhost, that's about 3900 characters, give or take; for MUX it's 7900.)
 
-== POINTS ==
+----
+
+== Points ==
 
 Points consist of the following parts:
 
@@ -174,6 +176,26 @@ All rules and restrictions are associated with a tier. These commands allow you 
 }}}
 `*` Note that `<Stat>` in these cases and many others, refers to either a stat name or a type of stat. This way you can apply blanket values to all stats of a type.
 `**` Enter nothing to clear a restriction.
+
+=== Types ===
+
+There are four explicit types of point target:
+
+  * Pool
+  * Point Group
+  * Stat Type
+  * Stat
+
+These may be explicitly declared by placing one of the following keywords, followed by a `:`, in front of your Target declaration:
+
+  * Pool
+  * Group
+  * Type
+  * Stat
+
+If you don't include one of these, the system will cheerfully attempt to guess in the order they're listed above.
+
+
 
 
 = OLD DATA BELOW THIS LINE =
@@ -449,6 +471,10 @@ The following functions may not be coded, since they would require, in theory, t
   * NewValue
   * Points
   * Default
+  * Pool
+  * Group
+  * Type
+  * Stat
   * Attributes1
   * Attributes2
   * Attributes3
