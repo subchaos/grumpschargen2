@@ -33,6 +33,7 @@ Every stat has the following parts:
 Each stat is stored like so:
 
 Stat Database: `&stat-# SDB=Type:Name:Value:Details`
+
 Player Object: `&_stat-# PC=Type:Name:Value:Details`
 
 === Types ===
