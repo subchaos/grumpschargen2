@@ -106,8 +106,8 @@ Stat values may have the following special formats:
     * Gender: Male, Female, or Transvestite
     * Race: Mortal, Vampire, Changeling, Werewolf or Mage
   * [#Formulas]
-    * Speed: `Basic:Size + Attribute:Strength + Attribute:Dexterity + Merit:Fleet of Foot + Kith:Runnerswift:2`
-
+    * Speed
+    * Defense
 
 All numerical stats may have a temporary value and a permanent value. These are stored on the PC as Temp/Perm. For example: `&_stat-# PC=Attribute:Strength:1/5`
 
@@ -333,7 +333,9 @@ From there, each string will be taken and evaluated separately. Strings may have
 
   * `Greatest:<Tilde-separated list of stats>`
   * `Least:<Tilde-separated list of stats>`
-  * `If:<Stat>:<Compare>:<True Value>[:<False Value>]`
+  * `If:<Stat>~<Compare>~<True Value>[~<False Value>]`
+  * `Setting:<&Setting>`
+  * `Flag:<System Flag>`
 
 If one of these identifiers is not found, the string will be treated as a stat. You may wish to explicitly declare the stat's type to keep it from being confused with other stats with similar names. If you wish to do so, the syntax is:
 
@@ -361,11 +363,56 @@ The above example would return the least of the player's Dexterity or Wits.
 
 This compares a stat to an expected value, and returns one value if true, and another if false. The false value is not necessary and will automatically evaluate to zero if not set.
 
-Example: `If:Kith:Runnerswift:2`
+Example: `If:Kith~Runnerswift~2`
 
 If the player's kith is set to "Runnerswift" then return 2. Otherwise, return 0.
 
+==== Setting ====
 
+This checks a player to see if they have (or do not have) a particular attribute set on their character object. It will return the value of that attribute when used in a formula. This can, incidentally, be used as part of an `If:` statement.
+
+Restriction Example: `Setting:_AUSPEXOK`
+
+If the player's `&_AUSPEXOK` value exists, let them access this stat.
+
+Value Example: `If:Setting:_PeanutButter~Joe~2`
+
+If the player has the attribute "`_PeanutButter`" on his character object and it is equal to "Joe", then return 2. Otherwise, return 0.
+
+Value Example: `Setting:_Size`
+
+If the player has the attribute "`_Size`" on his character object, return its value. Otherwise, return 0.
+
+==== Flag ====
+
+This checks a player to see if they have (or do not have) a particular flag set on their character object. It will return the either a 0 or a 1 when used in a formula. This can, incidentally, be used as part of an `If:` statement.
+
+Restriction Example: `Flag:WIZARD`
+
+If the player bit is a wizard, let them access this stat.
+
+Value Example: `If:Flag:BLIND~0~5`
+
+If the player does not have the "BLIND" flag (it evaluates to 0), then return 5. Otherwise, return 0.
+
+Value Example: `Flag:GUEST`
+
+If the player is a GUEST, return 1. Otherwise, return 0.
+
+Value Example: `If:Flag:LISTENING~1~3:1`
+
+If the player has the "LISTENING" flag (it evaluates to 1), then return 3. Otherwise, return 1.
+
+=== Examples ===
+
+*Restrictions:*
+  * `Merit:Stunning Looks > 2 & Skill:Persuasion > 3` - You must have Stunning Looks of at least 3 and Persuasion of at least 4 to take this stat.
+  * `(Attribute:Strength > 2 & Skill:Brawl > 2) | Attribute:Dexterity > 3` - You need either a Strength of at least 3 and a Brawl score of at least 3 OR a Dexterity of at least 4.
+  * `Personal:Affiliation = Police` - You must have your "Affiliation" stat set to "Police" to access this stat.
+
+*Values:*
+  * Speed: `Setting:_SIZE + Attribute:Strength + Attribute:Dexterity + Merit:Fleet of Foot + If:Kith~Runnerswift~Wyrd` - Speed is a calculated stat with a value of Size + Strength + Dexterity + the value of the Fleet of Foot merit +, if the PC is of the Runnerswift Kith, their Wyrd. (Random example, do not take as gospel.)
+  * Defense: `Lowest:Dexterity~Wits` - Defense is the lowest of the PC's dexterity or wits stats.
 
 
 
@@ -377,30 +424,6 @@ If the player's kith is set to "Runnerswift" then return 2. Otherwise, return 0.
 We WILL have a standardized validation format to compare stats. This is going to be the trickiest part of all. We will need it for merits, and to determine whether a person has the correct race/group to have stat X. Right now, it is as follows:
 
 === `CompareValue ComparisonOperator CompareValue` ===
-
-  * `CompareValue` may be expressed in the following ways:
-
-  `Stat Type:Stat Name` - yes, you must use the fully qualified stat name for the stat you want. If you want it to apply to all Languages, you would use `Merit:Language (*)` - whereas if you want it to apply only to Language (German) you would need to express it as `Merit:Language (German)`. It gets complicated, I know, having to repeat the entire thing, so I'll hopefully be including some shortcuts when I code the stat-adding portion of the CG.
-
-  A number, any number.
-
-  A piece of text, any valid piece of text using the rules above.
-
-  `Flag:<flag>` - one word, no spaces. If you want to set special permissions on your players, this is one way to do it. For example, Flag:Blind would require that the player object has the BLIND flag in order to operate it. Not the greatest example, but presumably you have special your-game-only flags if you want to use this.
-
-  `Setting:<&attribute>` - one word, no spaces. It's strongly recommended that you make the expected setting a wiz-only setting by starting it with a `_`. For example, you could check that the player has a setting of `_TEMPLATE` with the value "`Feature Character`" if you wanted. Staff would, of course, have to set the `_TEMPLATE` attribute on the player themselves, but you can easily make certain merits or stats check for it.
-
-  * `ComparisonOperator` is one of the following: >, <, =
-
-  You can group these expressions and then join them as in the standard programming language expressions. To group, use parentheses. Joining operators are | (OR) and & (AND). So you might end up with expressions like:
-
-  `Merit:Stunning Looks > 2 & Skill:Persuasion > 3`
-
-  `(Attribute:Strength > 2 & Skill:Brawl > 2) | Attribute:Dexterity > 3`
-
-  `Personal:Group = Police`
-
-  `Setting:_SPECIALCHARACTER = 1`
 
 == POINTS ==
 
