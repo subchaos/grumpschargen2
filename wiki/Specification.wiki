@@ -409,7 +409,7 @@ Example: `+cg/cost Blood Potency=Points:Type:Merit:3`
 
 This would make Blood Potency cost 3 merit points in chargen. (If the word `Type` is confusing, remember that it refers to "Stat Type".)
 
-==== CurrentValue ====
+==== Current Value ====
 
 This returns the current value of the stat. It is only usable in cost calculations because otherwise it would cause a great deal of messy recursion.
 
