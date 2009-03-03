@@ -124,6 +124,16 @@ Sample Details:
 Details can contain nearly anything and can be as long as a single attribute will hold. (For Rhost, that's about 3900 characters, give or take; for MUX it's 7900.)
 
 == POINTS ==
+
+Points consist of the following parts:
+
+  * Tier
+  * Type
+  * Target
+  * Value
+
+=== Tiers ===
+
 *Player Commands*
 {{{
 +ref <Tier>
@@ -131,8 +141,36 @@ Details can contain nearly anything and can be as long as a single attribute wil
 +cg/check <Tier>
 }}}
 
-= STILL EDITING BELOW THIS LINE =
-Sleepy and had to quit.
+*Staff Commands*
+{{{
++cg/tier <New Tier>
++cg/tier/nuke <Tier>
+}}}
+
+*Sample Tiers*
+  * Default
+  * Mortal
+  * Vampire
+  * Feature Character
+  * Greenhorn
+
+A tier is a group of points.
+
+You must have a Default tier.
+
+We will attempt to guess the point tier a player is going for, but if we can't, or we guess wrong, the player can set it explicitly.
+
+All rules and restrictions are associated with a tier. These commands allow you to permit one tier to have access to a stat or to higher levels of a stat, while another does not.
+
+*Staff Commands*
+{{{
++cg/min <Tier>/<Stat>=<Value>*
++cg/max <Tier>/<Stat>=<Value>
+}}}
+`*` Note that `<Stat>` in these cases and many others, refers to either a stat name or a type of stat. This way you can apply blanket values to all stats of a type.
+
+
+= OLD DATA BELOW THIS LINE =
 ----
 
 
