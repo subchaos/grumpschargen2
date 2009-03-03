@@ -1,6 +1,6 @@
 #summary Code specification
 #labels Featured,Phase-Design
-#sidebar !TableOfContents
+#sidebar TableOfContents
 
 ----
 
