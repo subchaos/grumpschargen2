@@ -36,7 +36,7 @@ Stat Database: `&stat-# SDB=Type:Name:Value:Details`
 
 Player Object: `&_stat-# PC=Type:Name:Value:Details`
 
-=== Types ===
+=== Stat Types ===
 
 *Staff Commands*
 {{{
@@ -55,7 +55,7 @@ Types are stored by name in the attribute `&stat_types` on the stat database and
 
 There are several "reserved" pseudo-types which act as keywords to tell the system to treat the data which follows differently. For the most part, you shouldn't have to worry about these; if you try to create a type which happens to have a reserved name, you'll be prevented from doing so. See [#Reserved_Words] for a list.
 
-=== Name ===
+=== Stat Names ===
 
 *Staff Commands*
 {{{
@@ -82,7 +82,7 @@ Stat names may have the following special formats:
 
 Names are stored on the stat database as the list, wildcard, or literal, as in `Language (*)`; on the player, they are stored as the actual, player-visible name: `Language (German)`.
 
-=== Values ===
+=== Stat Values ===
 
 *Staff Commands*
 {{{
@@ -113,7 +113,7 @@ Non-numerical stats are restricted in what characters they may contain. For deta
 
 [#Formulas] will be dealt with in more detail later.
 
-=== Details ===
+=== Stat Details ===
 
 *Commands*
 {{{
@@ -177,7 +177,7 @@ All rules and restrictions are associated with a tier. These commands allow you 
 `*` Note that `<Stat>` in these cases and many others, refers to either a stat name or a type of stat. This way you can apply blanket values to all stats of a type.
 `**` Enter nothing to clear a restriction.
 
-=== Types ===
+=== Point Types ===
 
 There are four explicit types of point target:
 
@@ -246,6 +246,14 @@ Group declaration is solely for the purpose of handling that annoying "point spr
 +cg/points Mortal/Attributes=6 4 3
 +cg/points Mortal/Skills=11 7 4
 }}}
+
+==== Type ====
+
+"Type" equates to a stat type. More about those in [#Stat_Types].
+
+==== Stat ====
+
+An explicit stat name. This is the broadest group and most prone to mistakes. Remember to use the actual, original text of the stat name: `Language (*)` as opposed to `Language (German)` if you have multiple `Language` stats which might confuse things. See [#Stat_Names] for details.
 
 
 
