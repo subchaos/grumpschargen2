@@ -429,9 +429,6 @@ Example: `+cg/cost XP/Attribute=If:CurrentValue < 4 | CurrentValue > 5~1~(Curren
 
 If the current value is 3 or lower, or greater than 5, the cost in XP to raise an attribute is the current value plus one, multiplied by 5. If the current value is four, the cost to raise it is 30.
 
-
-
-
 === Examples ===
 
 *Restrictions:*
@@ -462,40 +459,9 @@ If the current value is 3 or lower, or greater than 5, the cost in XP to raise a
 
   * `+cg/cost XP/Background=CurrentValue` - You have to pay the current value of the background you're raising in XP in order to raise it by one.
 
-
-
-
-
-= OLD DATA BELOW THIS LINE =
 ----
 
-== POINTS ==
-
-
-
-Costs are considered to apply across all tiers. CG points are always 1:1.
-
-To start drawing points from another point pool (freebies, XP) you need to finish with one pool, cement your points, spent or unspent. Going back will be a pain in the ass. I'll have to figure out a syntax for this.
-
-One more for the road, and this is one of those absolutely annoying features of White Wolf Games: Substats. Let's see here.
-
-`+cg/new Merit:Hollow (*)=#`
-
-`+cg/type Hollow`
-
-`+cg/new Hollow:Wards=#`
-
-`+cg/new Hollow:Amenities=#`
-
-`+cg/new Hollow:Doors=#`
-
-`+cg/points Default/Hollow=Merit:Hollow` - set the number of points used for the Hollow group of stats to the number of points the player currently has in Hollow.
-
-`+cg/max Default/Hollow=Merit:Hollow` - Don't let them go any higher than their current rating.
-
-There. Substats. That was nowhere near as disgusting as I thought it was going to be.
-
-== COMMAND SPEC ==
+== Command Specification ==
 
 *Goal*: Keep the list of commands simple and easy to remember. Multiple, easy to remember commands are preferred over single, overly complex commands.
 
@@ -505,13 +471,15 @@ There. Substats. That was nowhere near as disgusting as I thought it was going t
 
 *Goal*: Have a small suite of staff-only commands to override default chargen behavior.
 
-== NEW PLAYER COMMANDS ==
+=== New Player Commands ===
 
 `+cg/help` (also `+cghelp`) - Quick reference of chargen commands. *Coded.*
 
 `+cg` - Suggest what you need to do next, plus list a few vital commands.
 
 `+cg <Stat Name or Type>` - Check whether or not you meet a stat's prerequisites, if any. *Coded (equivalent to `+ref <Stat Name or Type>`)*
+
+`+cg/note <Stat Name>=[<Notes>]` (enter nothing to remove)
 
 `+cg <Stat Name>=<Value>`
   * +cg Brawl=5
@@ -528,11 +496,13 @@ There. Substats. That was nowhere near as disgusting as I thought it was going t
 
 `+cg/wipe` - Wipe your stats. Will ask if you're sure first.
 
+`+cg/wipe <Type>` - Wipe all stats of X Type (Attributes, Skills, etc). Will ask if you're sure first.
+
 `+cg/template` - Lists all templates.
 
 `+cg/template <Template>` - Show a template.
 
-== ALL PLAYER COMMANDS ==
+=== All Player Commands ===
 
 `+sheet` - View your sheet.
 
@@ -548,7 +518,7 @@ There. Substats. That was nowhere near as disgusting as I thought it was going t
 
 `+xp/buy <Stat Name>` - Spend XP on a stat.
 
-== STAFF COMMANDS ==
+=== Staff Commands ===
 
 `+cg/staffhelp` (also `+cgstaffhelp`) - Quick reference of staff chargen commands.
 
@@ -562,7 +532,13 @@ There. Substats. That was nowhere near as disgusting as I thought it was going t
 
 `+cg/new <Stat Type>:<Stat Name>=<Value>` *Coded.*
 
-`+cg/group [Attributes1, Attributes2, Attributes3, Skills1, Skills2, or Skills3]=<List of stat names>` - Manage the six default point groups. *Coded.*
+`+cg/statgroup <Group>` - Create a new group of stats. *Coded.*
+
+`+cg/statgroup <Group>=<List of stat names>` - Set the stats in that group. *Coded.*
+
+`+cg/pointgroup <Group>` - Create a new group of points. *Coded.*
+
+`+cg/pointgroup <Group>=<List of group names>` - Set the groups in that pointgroup. *Coded.*
 
 `+cg/tier <Tier Name>` - Tiers are groups of points available to players.
 
@@ -570,7 +546,7 @@ There. Substats. That was nowhere near as disgusting as I thought it was going t
 
 `+cg/template <New Template Name>` - Templates are predefined stats.
 
-`+cg/template <Template Name>/<Stat Name>=<Value>` - Set the stats a template sets.
+`+cg <Template Name>/<Stat Name>=<Value>` - Set the stats a template sets.
 
 `+cg/template/nuke <Template Name>`
 
@@ -578,19 +554,17 @@ There. Substats. That was nowhere near as disgusting as I thought it was going t
 
 `+cg/unrestrict <Stat Name, Stat Type, or Tier>`
 
-`+cg/points <Tier Name>/<Stat Type or Name, or pool name>=<Points>`
+`+cg/points <Tier Name>/<Pool, Group, Stat Type, or Stat>=<Points>`
 
-`+cg/min <Tier Name>/<Stat Type or Name>=<Value>`
+`+cg/min <Tier Name>/<Stat Type or Stat>=<Value>`
 
-`+cg/max <Tier Name>/<Stat Type or Name>=<Value>`
+`+cg/max <Tier Name>/<Stat Type or Stat>=<Value>`
 
-`+cg/default <Tier Name>/<Stat Type or Name>=<Value>` - the default will not be charged CG Points for.
+`+cg/default <Stat Type or Stat>=<Value>` - the default will not be charged CG Points for.
 
-`+cg/formula <Stat Name>=<Formula>`
+`+cg/cost [<Pool Name>/]<Stat Type or Stat>=<Formula>`
 
-`+cg/cost [<Pool Name>/]<Stat Type or Name>=<Formula>`
-
-`+cg/initialcost [<Pool Name>/]<Stat Type or Name>=<Formula>`
+`+cg/initialcost [<Pool Name>/]<Stat Type or Stat>=<Formula>`
 
 `+cg/note <Stat Name>=[<Notes>]` (enter nothing to remove)
 
@@ -600,7 +574,7 @@ There. Substats. That was nowhere near as disgusting as I thought it was going t
 
 The following functions may not be coded, since they would require, in theory, that we parse the playerbase and edit their stats. We're including them here as a possible stage 2 feature.
 
-`+cg/name <Stat Type or Name>=<New Stat Type Name or Stat Name>`
+`+cg/name <Stat Type or Stat>=<New Stat Type Name or Stat Name>`
 
 `+cg/type <Stat Name>=<New Stat Type>`
 
@@ -629,12 +603,11 @@ The following functions may not be coded, since they would require, in theory, t
   * Skills2
   * Skills3
 
-
 == Reserved Characters ==
 
 These characters will be interpreted specially by the chargen. If they are included in a player's input, they might result in weird things.
 
-Note that this is actually done in the code with a _whitelist_. Whitelisted characters are permitted. Anything not on the list is denied.
+Note that this is actually done in the code with a _whitelist_. Whitelisted characters are permitted. Anything not on the list is denied. You can add characters to the whitelist (European characters, etc, are a good candidate); the only reason I didn't was because I couldn't be sure they'd work on everyone's game.
 
   * `*` - Wildcard any text, multiply
   * `#` - Wildcard any number between 0 and 10
