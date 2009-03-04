@@ -293,7 +293,7 @@ A template is a group of predefined stats which allow players to set their chara
 
 Formulas allow stat values, restrictions, and point allocations to change based on the players' other stats. Formulas are stored on the stat databases in the "Value" field for whatever they're determining. They are also stored on the player object for ease of lookup.
 
-Note that stats which have "formula" values *cannot* be bought up with XP or in chargen. You may, however, create other stats which can be bought up and will raise the value of the formulaic stat.
+Note that stats which have "formula" values *cannot* be bought up with Experience or in chargen. You may, however, create other stats which can be bought up and will raise the value of the formulaic stat.
 
 Formulas are used in:
 
@@ -330,7 +330,6 @@ From there, each string will be taken and evaluated separately. Strings may have
   * `If:<Statement>~<True Value>[~<False Value>]`
   * `Setting:<&Setting>`
   * `Flag:<System Flag>`
-  * `Points:<Target>`
   * `CurrentValue`
 
 If one of these identifiers is not found, the string will be treated as a stat. You may wish to explicitly declare the stat's type to keep it from being confused with other stats with similar names. If you wish to do so, the syntax is:
@@ -403,21 +402,13 @@ Value Example: `If:Flag:LISTENING~3~1`
 
 If the player has the "LISTENING" flag (it evaluates to 1), then return 3. Otherwise, return 1.
 
-==== Chargen Points ====
-
-This allows you to draw points from other pools when charging people for basic chargen stuff. It is expressed like so: `Points:Type:Target:Value`.
-
-Example: `+cg/cost Blood Potency=Points:Type:Merit:3`
-
-This would make Blood Potency cost 3 merit points in chargen. (If the word `Type` is confusing, remember that it refers to "Stat Type".)
-
 ==== Current Value ====
 
 This returns the current value of the stat. It is only usable in cost calculations because otherwise it would cause a great deal of messy recursion.
 
-Example: `+cg/cost XP/Attribute=If:CurrentValue < 4 | CurrentValue > 5~(CurrentValue + 1) * 5~30`
+Example: `+cg/cost Experience/Attribute=If:CurrentValue < 4 | CurrentValue > 5~(CurrentValue + 1) * 5~30`
 
-If the current value is 3 or lower, or greater than 5, the cost in XP to raise an attribute is the current value plus one, multiplied by 5. If the current value is four, the cost to raise it is 30.
+If the current value is 3 or lower, or greater than 5, the cost in Experience to raise an attribute is the current value plus one, multiplied by 5. If the current value is four, the cost to raise it is 30.
 
 === Examples ===
 
@@ -441,13 +432,13 @@ If the current value is 3 or lower, or greater than 5, the cost in XP to raise a
 
   * `+cg/new Advanced:Willpower=Resolve + Composure + Advanced:Extra Willpower` - Create a new calculated stat named Willpower which depends on two attributes and an advanced stat named "Extra Willpower", which might be bought up by players permitted to do so.
 
-  * `+cg/cost Blood Potency=Points:Type:Merit:3` - This would make Blood Potency cost 3 merit points in chargen.
+  * `+cg/cost Blood Potency=Merit:3` - This would make Blood Potency cost 3 merit points in chargen. (Cost, when not set to Experience or Freebies, will take only a <Target>:<Value> value or a number.)
 
-  * `+cg/cost XP/Willpower=Willpower * 5` - Make the cost of going up a level in willpower the current value multiplied by five.
+  * `+cg/cost Experience/Willpower=Willpower * 5` - Make the cost of going up a level in willpower the current value multiplied by five.
 
-  * `+cg/cost XP/Attribute=If:CurrentValue < 4 | CurrentValue > 5~(CurrentValue + 1) * 5~30` - If the current value is 3 or lower, or greater than 5, the cost in XP to raise an attribute is the current value plus one, multiplied by 5. If the current value is four, the cost to raise it is 30.
+  * `+cg/cost Experience/Attribute=If:CurrentValue < 4 | CurrentValue > 5~(CurrentValue + 1) * 5~30` - If the current value is 3 or lower, or greater than 5, the cost in Experience to raise an attribute is the current value plus one, multiplied by 5. If the current value is four, the cost to raise it is 30.
 
-  * `+cg/cost XP/Background=CurrentValue` - You have to pay the current value of the background you're raising in XP in order to raise it by one.
+  * `+cg/cost Experience/Background=CurrentValue` - You have to pay the current value of the background you're raising in Experience in order to raise it by one.
 
 ----
 
@@ -502,11 +493,11 @@ If the current value is 3 or lower, or greater than 5, the cost in XP to raise a
 
 `+ref <Stat Name>` - List all details in that stat, plus formats available, plus values available, plus any checks that will be run on this stat. *Coded.*
 
-`+xp` - List how much XP you have, plus handy spending commands (if in XP-spending-safe area).
+`+xp` - List how much Experience you have, plus handy spending commands (if in Experience-spending-safe area).
 
 `+xp/check <Stat Name>` - Lists how much it would cost to buy the next level of that stat, and whether you meet the prerequisites.
 
-`+xp/buy <Stat Name>` - Spend XP on a stat.
+`+xp/buy <Stat Name>` - Spend Experience on a stat.
 
 === Staff Commands ===
 
