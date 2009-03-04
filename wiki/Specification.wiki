@@ -327,7 +327,7 @@ From there, each string will be taken and evaluated separately. Strings may have
 
   * `Greatest:<Tilde-separated list of stats>`
   * `Least:<Tilde-separated list of stats>`
-  * `If:<Stat>~<Compare>~<True Value>[~<False Value>]`
+  * `If:<Statement>~<True Value>[~<False Value>]`
   * `Setting:<&Setting>`
   * `Flag:<System Flag>`
   * `Points:<Target>`
@@ -359,13 +359,13 @@ The above example would return the least of the player's Dexterity or Wits.
 
 This compares a stat to an expected value, and returns one value if true, and another if false. The false value is not necessary and will automatically evaluate to zero if not set. You can have multiple comparisons; the last option will be the "false" if nothing in the list is matched.
 
-Example: `If:Kith~Runnerswift~2`
+Example: `If:Kith = Runnerswift~2`
 
 If the player's kith is set to "Runnerswift" then return 2. Otherwise, return 0.
 
-Example: `If:Affiliation~Police~3~Hospital~2~1`
+Example: `If:Affiliation = Police~3~Affiliation = Hospital~2~1`
 
-If the player's affiliation is set to "Police", return 3; if it's set to "Hospital", return 2; if it's set to anything else or doesn't exist, return 1.
+If the player's affiliation is set to "Police", return 3; if it's set to "Hospital", return 2; otherwise, return 1.
 
 ==== Setting ====
 
@@ -375,7 +375,7 @@ Restriction Example: `Setting:_AUSPEXOK`
 
 If the player's `&_AUSPEXOK` value exists, let them access this stat.
 
-Value Example: `If:Setting:_PeanutButter~Joe~2`
+Value Example: `If:Setting:_PeanutButter = Joe~2`
 
 If the player has the attribute "`_PeanutButter`" on his character object and it is equal to "Joe", then return 2. Otherwise, return 0.
 
@@ -391,7 +391,7 @@ Restriction Example: `Flag:WIZARD`
 
 If the player bit is a wizard, let them access this stat.
 
-Value Example: `If:Flag:BLIND~0~5`
+Value Example: `If:Flag:BLIND = 0~5`
 
 If the player does not have the "BLIND" flag (it evaluates to 0), then return 5. Otherwise, return 0.
 
@@ -399,7 +399,7 @@ Value Example: `Flag:GUEST`
 
 If the player is a GUEST, return 1. Otherwise, return 0.
 
-Value Example: `If:Flag:LISTENING~1~3~1`
+Value Example: `If:Flag:LISTENING~3~1`
 
 If the player has the "LISTENING" flag (it evaluates to 1), then return 3. Otherwise, return 1.
 
@@ -415,7 +415,7 @@ This would make Blood Potency cost 3 merit points in chargen. (If the word `Type
 
 This returns the current value of the stat. It is only usable in cost calculations because otherwise it would cause a great deal of messy recursion.
 
-Example: `+cg/cost XP/Attribute=If:CurrentValue < 4 | CurrentValue > 5~1~(CurrentValue + 1) * 5~30`
+Example: `+cg/cost XP/Attribute=If:CurrentValue < 4 | CurrentValue > 5~(CurrentValue + 1) * 5~30`
 
 If the current value is 3 or lower, or greater than 5, the cost in XP to raise an attribute is the current value plus one, multiplied by 5. If the current value is four, the cost to raise it is 30.
 
@@ -431,7 +431,7 @@ If the current value is 3 or lower, or greater than 5, the cost in XP to raise a
 
 *Values:*
 
-  * Speed: `Setting:_SIZE + Attribute:Strength + Attribute:Dexterity + Merit:Fleet of Foot + If:Kith~Runnerswift~Wyrd` - Speed is a calculated stat with a value of Size + Strength + Dexterity + the value of the Fleet of Foot merit +, if the PC is of the Runnerswift Kith, their Wyrd. (Random example, do not take as gospel.)
+  * Speed: `Setting:_SIZE + Attribute:Strength + Attribute:Dexterity + Merit:Fleet of Foot + If:Kith = Runnerswift~Wyrd` - Speed is a calculated stat with a value of Size + Strength + Dexterity + the value of the Fleet of Foot merit +, if the PC is of the Runnerswift Kith, their Wyrd. (Random example, do not take as gospel.)
 
   * Defense: `Lowest:Dexterity~Wits` - Defense is the lowest of the PC's dexterity or wits stats.
 
@@ -445,7 +445,7 @@ If the current value is 3 or lower, or greater than 5, the cost in XP to raise a
 
   * `+cg/cost XP/Willpower=Willpower * 5` - Make the cost of going up a level in willpower the current value multiplied by five.
 
-  * `+cg/cost XP/Attribute=If:CurrentValue < 4 | CurrentValue > 5~1~(CurrentValue + 1) * 5~30` - If the current value is 3 or lower, or greater than 5, the cost in XP to raise an attribute is the current value plus one, multiplied by 5. If the current value is four, the cost to raise it is 30.
+  * `+cg/cost XP/Attribute=If:CurrentValue < 4 | CurrentValue > 5~(CurrentValue + 1) * 5~30` - If the current value is 3 or lower, or greater than 5, the cost in XP to raise an attribute is the current value plus one, multiplied by 5. If the current value is four, the cost to raise it is 30.
 
   * `+cg/cost XP/Background=CurrentValue` - You have to pay the current value of the background you're raising in XP in order to raise it by one.
 
