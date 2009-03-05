@@ -432,7 +432,7 @@ If the current value is 3 or lower, or greater than 5, the cost in Experience to
 
   * `+cg/new Advanced:Willpower=Resolve + Composure + Advanced:Extra Willpower` - Create a new calculated stat named Willpower which depends on two attributes and an advanced stat named "Extra Willpower", which might be bought up by players permitted to do so.
 
-  * `+cg/cost Blood Potency=Merit:3` - This would make Blood Potency cost 3 merit points in chargen. (Cost, when not set to Experience or Freebies, will take only a <Target>:<Value> value or a number.)
+  * `+cg/cost Blood Potency=Merit:3` - This would make Blood Potency cost 3 merit points in chargen. (Cost, when not set to Experience or Freebies, will take only a `<Target>:<Value>` value or a number.)
 
   * `+cg/cost Experience/Willpower=Willpower * 5` - Make the cost of going up a level in willpower the current value multiplied by five.
 
