@@ -1,0 +1,630 @@
+
+
+
+---
+
+
+## Stats ##
+
+**Player Commands**
+```
++cg <Stat>=<Value>
++ref <Stat>
++cg/check
++cg/check <Stat>
++cg/wipe
++cg/wipe <Stat>
+```
+
+Every stat has the following parts:
+
+  * Type
+  * Name
+  * Value
+  * Details
+
+Each stat is stored like so:
+
+Stat Database: `&stat-# SDB=Type:Name:Value:Details`
+
+Player Object: `&_stat-# PC=Type:Name:Value:Details`
+
+### Stat Types ###
+
+**Staff Commands**
+```
++cg/new <Type>
++cg/nuke <Type>
++cg/type <Stat>=<New Type>*
+```
+`*` May not be implemented since it requires changing every PC object on the grid.
+
+**Sample Types**
+  * Attribute
+  * Merit
+  * Discipline
+
+Types are stored by name in the attribute `&stat_types` on the stat database and are referenced by name (rather than by number) on the PC and stat databases for ease of lookup.
+
+There are several "reserved" pseudo-types which act as keywords to tell the system to treat the data which follows differently. For the most part, you shouldn't have to worry about these; if you try to create a type which happens to have a reserved name, you'll be prevented from doing so. See [#Reserved\_Words](#Reserved_Words.md) for a list.
+
+### Stat Names ###
+
+**Staff Commands**
+```
++cg/new <Type>:<Name>=<Value>
++cg/nuke <Type>:<Name>
++cg/name <Stat>=<New Name>*
+```
+`*` May not be implemented since it requires changing every PC object on the grid.
+
+Stat names may have the following special formats:
+
+  * Literals: `Name`
+    * Brawl
+    * Melee
+    * Strength
+  * Wildcards: `Name (*)`
+    * Language (Sign Language)
+    * Hollow (Motley)
+    * Hollow (Personal)
+  * Lists: `Name (Option A|Option B|Option C)`
+    * Status (Police)
+    * Status (Fire Department)
+    * Status (Vampire)
+
+Names are stored on the stat database as the list, wildcard, or literal, as in `Language (*)`; on the player, they are stored as the actual, player-visible name: `Language (German)`.
+
+### Stat Values ###
+
+**Staff Commands**
+```
++cg/new <Type>:<Name>=<Value>
++cg/default <Stat>=<Value>
++cg/value <Stat>=<New Value>*
+```
+`*` May not be implemented since it requires checking and possibly changing every PC object on the grid.
+
+Stat values may have the following special formats:
+
+  * Numerals between 0 and 10: `#`
+  * Wildcards: `*`
+    * Full name: Sammy the Snake
+    * Occupation: Peanut butter maker
+  * List of valid options: `Option A|Option B|Option C|etc...`
+    * Gender: Male, Female, or Transvestite
+    * Race: Mortal, Vampire, Changeling, Werewolf or Mage
+  * [#Formulas](#Formulas.md)
+    * Speed
+    * Defense
+
+All numerical stats may have a temporary value and a permanent value. These are stored on the PC as Temp/Perm. For example: `&_stat-# PC=Attribute:Strength:1/5`
+
+Non-numerical stat values may not be rolled.
+
+Non-numerical stats are restricted in what characters they may contain. For details, see [#Restricted\_Characters](#Restricted_Characters.md) and [#Reserved\_Characters](#Reserved_Characters.md). A good rule of thumb is that restricted characters may not be used in a stat value or name at all, ever, while reserved characters may be used in names and values by staff.
+
+[#Formulas](#Formulas.md) will be dealt with in more detail later.
+
+### Stat Details ###
+
+**Commands**
+```
++cg/note <Stat>=<Details>*
+```
+`*` When used by a staffer, this command sets the details of the stat in the database. When used by a player, it sets a note on the stat in case the player wants to justify it in some way. All stats can have details.
+
+Sample Details:
+  * On a PC's Strength: Set to 5 because my character is a world-class bodybuilder.
+  * On the Stat DB: Strength is the stat which tells you how strong your character is.%R%R%T0: Completely unable to move.%R%T1: 90-pound weakling.%R%T2: Average human being.%R%T3: Athlete.%R%T4: Champion wrestler.%R%T5: World-class Olympic bodybuilder.%R%T6: Superhuman.%R%T7: Werewolf.%R%T8: Ungodly.%R%T9: Impossible.%R%T10: Godlike.
+
+Details can contain nearly anything and can be as long as a single attribute will hold. (For Rhost, that's about 3900 characters, give or take; for MUX it's 7900.)
+
+
+---
+
+
+## Points ##
+
+Points consist of the following parts:
+
+  * Tier
+  * Type
+  * Target
+  * Value
+
+### Tiers ###
+
+**Player Commands**
+```
++ref <Tier>
++cg Tier=<Tier>
++cg/check <Tier>
+```
+
+**Staff Commands**
+```
++cg/tier <New Tier>
++cg/tier/nuke <Tier>
+```
+
+**Sample Tiers**
+  * Default
+  * Mortal
+  * Vampire
+  * Feature Character
+  * Greenhorn
+
+A tier is a group of points.
+
+You must have a Default tier.
+
+We will attempt to guess the point tier a player is going for, but if we can't, or we guess wrong, the player can set it explicitly.
+
+All rules and restrictions are associated with a tier. These commands allow you to permit one tier to have access to a stat or to higher levels of a stat, while another does not.
+
+**Staff Commands**
+```
++cg/min <Tier>/<Stat>=<Value>*
++cg/max <Tier>/<Stat>=<Value>
++cg/restrict <Tier>/<Stat>=<Value>**
+```
+`*` Note that `<Stat>` in these cases and many others, refers to either a stat name or a type of stat. This way you can apply blanket values to all stats of a type.
+`**` Enter nothing to clear a restriction.
+
+### Point Types ###
+
+There are four explicit types of point target:
+
+  * Pool
+  * Point Group
+  * Stat Type
+  * Stat
+
+These may be explicitly declared by placing one of the following keywords, followed by a `:`, in front of your Target declaration:
+
+  * Pool
+  * Group
+  * Type
+  * Stat
+
+If you don't include one of these, the system will cheerfully attempt to guess in the order they're listed above.
+
+#### Pools ####
+
+There are only two types of pool: `Experience` and `Freebies`. These are explicitly declared in the code. We do NOT have a pool management system. You may set the number of points in these pools, but there is no other administration for them.
+
+**Sample Staff Commands**
+```
++cg/points Default/Experience=0
++cg/points Default/Pool:Experience=0*
++cg/points Advanced/Experience=35
++cg/points Heroic/Experience=100
++cg/points Default/Freebies=15
++cg/points Mortal/Freebies=21
+```
+`*` Does exactly the same thing as the item above it. Just an example of explicit type declaration.
+
+#### Group ####
+
+Groups come in two types: _Point Groups_ and _Stat Groups_. Stat groups are groups of stats. Point groups are stat groups grouped together for point-spreading purposes.
+
+**Staff Commands**
+```
++cg/statgroup <New Stat Group>
++cg/statgroup <Stat Group>=<List of Stats Separated by Pipes (|)>
++cg/statgroup/nuke <Stat Group>
+
++cg/pointgroup <New Point Group>
++cg/pointgroup <Point Group>=<List of Stat Groups Separated by Pipes (|)>
++cg/pointgroup/nuke <Point Group>
+```
+
+**Sample Stat Groups**
+  * Physical Attributes
+  * Social Skills
+  * Talents
+  * Skills
+  * Knowledges
+
+**Sample Point Groups**
+  * Attributes
+  * Skills
+  * Abilities
+
+Group declaration is solely for the purpose of handling that annoying "point spread" WoD mechanic. As such, it accepts only a list of numbers for its value.
+
+**Sample Staff Commands**
+```
++cg/points Default/Attributes=7 5 3
++cg/points Default/Group:Skills=13 9 5
++cg/points Mortal/Attributes=6 4 3
++cg/points Mortal/Skills=11 7 4
+```
+
+#### Type ####
+
+"Type" equates to a stat type. More about those in [#Stat\_Types](#Stat_Types.md).
+
+#### Stat ####
+
+An explicit stat name. This is the broadest group and most prone to mistakes. Remember to use the actual, original text of the stat name: `Language (*)` as opposed to `Language (German)` if you have multiple `Language` stats which might confuse things. See [#Stat\_Names](#Stat_Names.md) for details.
+
+### Point Targets ###
+
+Most of this was discussed in the [#Point\_Types](#Point_Types.md) section. For storage purposes, target will be as explicit as possible.
+
+### Point Values ###
+
+Values may be:
+  * A number.
+  * For a point group, a list of numbers.
+  * A formula.
+
+Numbers may be any number greater than or equal to zero.
+
+If the target is a point group, you must have exactly the same number of points as you have stat groups in your point group. These must be numbers greater than or equal to zero.
+
+More on [#Formulas](#Formulas.md) later.
+
+
+---
+
+
+## Templates ##
+
+A template is a group of predefined stats which allow players to set their characters up quickly. Templates have **nothing** to do with Tiers or points, and may cause point errors when applied.
+
+**Player Commands**
+```
++cg Template=<Template>*
++ref <Template>
+```
+`*` Will ask if you're sure before applying.
+
+**Staff Commands**
+```
++cg/template <New Template>
++cg/template/nuke <Template>
++cg <Template>/<Stat>=<Value>*
+```
+`*` This command works **just** like the player `+cg <Stat>=<Value>` command. To clear a value from a template, enter nothing for the value.
+
+
+---
+
+
+## Formulas ##
+
+Formulas allow stat values, restrictions, and point allocations to change based on the players' other stats. Formulas are stored on the stat databases in the "Value" field for whatever they're determining. They are also stored on the player object for ease of lookup.
+
+Note that stats which have "formula" values **cannot** be bought up with Experience or in chargen. You may, however, create other stats which can be bought up and will raise the value of the formulaic stat.
+
+Formulas are used in:
+
+  * Restrictions
+  * Values
+
+The commands which can accept formula values are:
+```
++cg/points <Tier>/<Stat>=<Formula>
++cg/min <Tier>/<Stat>=<Formula>
++cg/max <Tier>/<Stat>=<Formula>
++cg/default <Stat>=<Formula>
++cg/restrict <Target>=<Formula>
+```
+
+### Syntax ###
+
+An expression will be split up based on the following symbols:
+
+  * `(` and `)` - Group an expression
+  * `+` - Add
+  * `-` - Subtract
+  * `>` - Greater Than
+  * `<` - Less Than
+  * `=` - Equal To
+  * `/` - Divide
+  * `|` - Or
+  * `&` - And
+
+From there, each string will be taken and evaluated separately. Strings may have the following special identifiers:
+
+  * `Greatest:<Tilde-separated list of stats>`
+  * `Least:<Tilde-separated list of stats>`
+  * `If:<Statement>~<True Value>[~<False Value>]`
+  * `Setting:<&Setting>`
+  * `Flag:<System Flag>`
+  * `CurrentValue`
+
+If one of these identifiers is not found, the string will be treated as a stat. You may wish to explicitly declare the stat's type to keep it from being confused with other stats with similar names. If you wish to do so, the syntax is:
+
+  * `Type:Stat` - for example, `Attribute:Strength`
+
+Note that expressions deal in both temporary and permanent values and may evaluate differently for each if a player's temporary stats are drastically different from his permanent stats. You cannot explicitly specify a temporary or permanent value of a stat.
+
+#### Greatest ####
+
+This would take the highest numerical stat in the list and return its value.
+
+Example: `Greatest:Strength~Dexterity~Stamina`
+
+The above example would return the highest of the player's Strength, Dexterity, or Stamina.
+
+#### Least ####
+
+This will take the lowest numerical stat in the list and return its value.
+
+Example: `Least:Dexterity~Wits`
+
+The above example would return the least of the player's Dexterity or Wits.
+
+#### If ####
+
+This compares a stat to an expected value, and returns one value if true, and another if false. The false value is not necessary and will automatically evaluate to zero if not set. You can have multiple comparisons; the last option will be the "false" if nothing in the list is matched.
+
+Example: `If:Kith = Runnerswift~2`
+
+If the player's kith is set to "Runnerswift" then return 2. Otherwise, return 0.
+
+Example: `If:Affiliation = Police~3~Affiliation = Hospital~2~1`
+
+If the player's affiliation is set to "Police", return 3; if it's set to "Hospital", return 2; otherwise, return 1.
+
+#### Setting ####
+
+This checks a player to see if they have (or do not have) a particular attribute set on their character object. It will return the value of that attribute when used in a formula. This can, incidentally, be used as part of an `If:` statement.
+
+Restriction Example: `Setting:_AUSPEXOK`
+
+If the player's `&_AUSPEXOK` value exists, let them access this stat.
+
+Value Example: `If:Setting:_PeanutButter = Joe~2`
+
+If the player has the attribute "`_PeanutButter`" on his character object and it is equal to "Joe", then return 2. Otherwise, return 0.
+
+Value Example: `Setting:_Size`
+
+If the player has the attribute "`_Size`" on his character object, return its value. Otherwise, return 0.
+
+#### Flag ####
+
+This checks a player to see if they have (or do not have) a particular flag set on their character object. It will return the either a 0 or a 1 when used in a formula. This can, incidentally, be used as part of an `If:` statement.
+
+Restriction Example: `Flag:WIZARD`
+
+If the player bit is a wizard, let them access this stat.
+
+Value Example: `If:Flag:BLIND = 0~5`
+
+If the player does not have the "BLIND" flag (it evaluates to 0), then return 5. Otherwise, return 0.
+
+Value Example: `Flag:GUEST`
+
+If the player is a GUEST, return 1. Otherwise, return 0.
+
+Value Example: `If:Flag:LISTENING~3~1`
+
+If the player has the "LISTENING" flag (it evaluates to 1), then return 3. Otherwise, return 1.
+
+#### Current Value ####
+
+This returns the current value of the stat. It is only usable in cost calculations because otherwise it would cause a great deal of messy recursion.
+
+Example: `+cg/cost Experience/Attribute=If:CurrentValue < 4 | CurrentValue > 5~(CurrentValue + 1) * 5~30`
+
+If the current value is 3 or lower, or greater than 5, the cost in Experience to raise an attribute is the current value plus one, multiplied by 5. If the current value is four, the cost to raise it is 30.
+
+### Examples ###
+
+**Restrictions:**
+
+  * `Merit:Stunning Looks > 2 & Skill:Persuasion > 3` - You must have Stunning Looks of at least 3 and Persuasion of at least 4 to take this stat.
+
+  * `(Attribute:Strength > 2 & Skill:Brawl > 2) | Attribute:Dexterity > 3` - You need either a Strength of at least 3 and a Brawl score of at least 3 OR a Dexterity of at least 4.
+
+  * `Personal:Affiliation = Police` - You must have your "Affiliation" stat set to "Police" to access this stat.
+
+**Values:**
+
+  * Speed: `Setting:_SIZE + Attribute:Strength + Attribute:Dexterity + Merit:Fleet of Foot + If:Kith = Runnerswift~Wyrd` - Speed is a calculated stat with a value of Size + Strength + Dexterity + the value of the Fleet of Foot merit +, if the PC is of the Runnerswift Kith, their Wyrd. (Random example, do not take as gospel.)
+
+  * Defense: `Lowest:Dexterity~Wits` - Defense is the lowest of the PC's dexterity or wits stats.
+
+**Actual Use:**
+
+  * `+cg/points Default/Type:Hollow=Merit:Hollow` - The player has as many points to spend in the "Hollow" type of stat as they have in the "Hollow" Merit. This can be handy for some of that crazy sub-stat foo White Wolf tosses out frequently.
+
+  * `+cg/new Advanced:Willpower=Resolve + Composure + Advanced:Extra Willpower` - Create a new calculated stat named Willpower which depends on two attributes and an advanced stat named "Extra Willpower", which might be bought up by players permitted to do so.
+
+  * `+cg/cost Blood Potency=Merit:3` - This would make Blood Potency cost 3 merit points in chargen. (Cost, when not set to Experience or Freebies, will take only a `<Target>:<Value>` value or a number.)
+
+  * `+cg/cost Experience/Willpower=Willpower * 5` - Make the cost of going up a level in willpower the current value multiplied by five.
+
+  * `+cg/cost Experience/Attribute=If:CurrentValue < 4 | CurrentValue > 5~(CurrentValue + 1) * 5~30` - If the current value is 3 or lower, or greater than 5, the cost in Experience to raise an attribute is the current value plus one, multiplied by 5. If the current value is four, the cost to raise it is 30.
+
+  * `+cg/cost Experience/Background=CurrentValue` - You have to pay the current value of the background you're raising in Experience in order to raise it by one.
+
+
+---
+
+
+## Command Specification ##
+
+**Goal**: Keep the list of commands simple and easy to remember. Multiple, easy to remember commands are preferred over single, overly complex commands.
+
+**Goal**: Don't step on any default commands like +set. Let's try to keep them prefixed with +cg and +xp.
+
+**Goal**: Follow the model set forth in GCG v1 - advanced players can set things to whatever they want, without being pestered with errors. Staff can, if they choose, manually approve these characters.
+
+**Goal**: Have a small suite of staff-only commands to override default chargen behavior.
+
+### New Player Commands ###
+
+`+cg/help` (also `+cghelp`) - Quick reference of chargen commands. **Coded.**
+
+`+cg` - Suggest what you need to do next, plus list a few vital commands.
+
+`+cg <Stat Name or Type>` - Check whether or not you meet a stat's prerequisites, if any. **Coded (equivalent to `+ref <Stat Name or Type>`)**
+
+`+cg/note <Stat Name>=[<Notes>]` (enter nothing to remove)
+
+`+cg <Stat Name>=<Value>`
+  * +cg Brawl=5
+  * +cg Language (German)=1
+  * +cg Hollow (Personal)=5
+
+`+cg Template=<Template>` - Special version. Applies a template. Will ask if you're sure first. (Template here means "group of pre-defined points which can be applied to your sheet.")
+
+`+cg Tier=<Tier>` - Special version. Checks your points based on a different tier than the one you're listed in by default. (Tier means "point group".)
+
+`+cg/check` - Check you for everything that needs to be set before you can be approved.
+
+`+cg/complete` - Runs all checks and, if you pass, performs the "chargen complete" action.
+
+`+cg/wipe` - Wipe your stats. Will ask if you're sure first.
+
+`+cg/wipe <Type>` - Wipe all stats of X Type (Attributes, Skills, etc). Will ask if you're sure first.
+
+`+cg/template` - Lists all templates.
+
+`+cg/template <Template>` - Show a template.
+
+### All Player Commands ###
+
+`+sheet` - View your sheet.
+
+`+ref` - List all types of stats, plus handy stat database help info. **Coded.**
+
+`+ref <Stat Type>` - List all stats in that type, plus any checks that will be run by type. **Coded.**
+
+`+ref <Stat Name>` - List all details in that stat, plus formats available, plus values available, plus any checks that will be run on this stat. **Coded.**
+
+`+xp` - List how much Experience you have, plus handy spending commands (if in Experience-spending-safe area).
+
+`+xp/check <Stat Name>` - Lists how much it would cost to buy the next level of that stat, and whether you meet the prerequisites.
+
+`+xp/buy <Stat Name>` - Spend Experience on a stat.
+
+### Staff Commands ###
+
+`+cg/staffhelp` (also `+cgstaffhelp`) - Quick reference of staff chargen commands.
+
+`+sheet <Player>`
+
+`+cg/approve <Player>` (also `+approve`)
+
+`+cg/unapprove <Player>` (also `+unapprove`)
+
+`+cg/new <Stat Type>` **Coded.**
+
+`+cg/new <Stat Type>:<Stat Name>=<Value>` **Coded.**
+
+`+cg/statgroup <Group>` - Create a new group of stats. **Coded.**
+
+`+cg/statgroup <Group>=<List of stat names>` - Set the stats in that group. **Coded.**
+
+`+cg/pointgroup <Group>` - Create a new group of points. **Coded.**
+
+`+cg/pointgroup <Group>=<List of group names>` - Set the groups in that pointgroup. **Coded.**
+
+`+cg/tier <Tier Name>` - Tiers are groups of points available to players.
+
+`+cg/tier/nuke <Tier Name>`
+
+`+cg/template <New Template Name>` - Templates are predefined stats.
+
+`+cg <Template Name>/<Stat Name>=<Value>` - Set the stats a template sets.
+
+`+cg/template/nuke <Template Name>`
+
+`+cg/restrict <Stat Name, Stat Type, or Tier>=<Restrictions>` (Does not compound)
+
+`+cg/unrestrict <Stat Name, Stat Type, or Tier>`
+
+`+cg/points <Tier Name>/<Pool, Group, Stat Type, or Stat>=<Points>`
+
+`+cg/min <Tier Name>/<Stat Type or Stat>=<Value>`
+
+`+cg/max <Tier Name>/<Stat Type or Stat>=<Value>`
+
+`+cg/default <Stat Type or Stat>=<Value>` - the default will not be charged CG Points for.
+
+`+cg/cost [<Pool Name>/]<Stat Type or Stat>=<Formula>`
+
+`+cg/initialcost [<Pool Name>/]<Stat Type or Stat>=<Formula>`
+
+`+cg/note <Stat Name>=[<Notes>]` (enter nothing to remove)
+
+`+cg/nuke <Stat Type>`
+
+`+cg/nuke <Stat Type>:<Stat Name>`
+
+The following functions may not be coded, since they would require, in theory, that we parse the playerbase and edit their stats. We're including them here as a possible stage 2 feature.
+
+`+cg/name <Stat Type or Stat>=<New Stat Type Name or Stat Name>`
+
+`+cg/type <Stat Name>=<New Stat Type>`
+
+`+cg/value <Stat Name>=<New Value>`
+
+
+---
+
+
+## Reserved Words ##
+
+  * Tier
+  * Template
+  * Setting
+  * Flag
+  * Greatest
+  * Least
+  * If
+  * CurrentValue
+  * Points
+  * Default
+  * Pool
+  * Group
+  * Type
+  * Stat
+
+
+---
+
+
+## Reserved Characters ##
+
+These characters will be interpreted specially by the chargen. If they are included in a player's input, they might result in weird things.
+
+Note that this is actually done in the code with a _whitelist_. Whitelisted characters are permitted. Anything not on the list is denied. You can add characters to the whitelist (European characters, etc, are a good candidate); the only reason I didn't was because I couldn't be sure they'd work on everyone's game.
+
+  * `*` - Wildcard any text, multiply
+  * `#` - Wildcard any number between 0 and 10
+  * `(` and `)` - Group an expression
+  * `+` - Add
+  * `-` - Subtract
+  * `>` - Greater Than
+  * `<` - Less Than
+  * `=` - Equal To, also a separator in commands
+  * `/` - Divide, also a separator in commands
+  * `~` - Database separator
+  * `:` - Database separator, also a separator in commands
+  * `|` - Or, also a database separator, also a separator in commands
+  * `&` - And
+
+
+---
+
+
+## Restricted Characters ##
+
+These letters will be interpreted, in some cases, by MU\*code. They should be restricted to prevent code injection.
+
+Note that this is actually done in the code with a _whitelist_. Whitelisted characters are permitted. Anything not on the list is denied.
+
+  * `%` - Escape character.
+  * `\` - Escape character.
+  * `{` and `}` - MUCode group characters.
+  * `[` and `]` - MUCode group characters, forces evaluation of text within them.
+  * `;` - Terminates a command.

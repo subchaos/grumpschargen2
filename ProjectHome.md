@@ -1,0 +1,3 @@
+In theory, this will  be a simple (to use, not to code, though I will be taking shortcuts to ensure that it's simple to code too), extensible (stick your own character objects and data in there and make it work with your favorite system) character generator for MUX (and possibly other codebases). It will include a default stat database for NWoD and OWoD.
+
+This is the second version of this character generator. The original was for NWoD only and was not very extensible at all, plus was only usable in Rhost. I aim to fix the bugs of the previous version and make this version more useful and more usable, plus easier to administer.
